@@ -1,347 +1,566 @@
-{\rtf1\ansi\ansicpg936\cocoartf2822
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww33100\viewh17880\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品集 - 乡野寻踪 | 湿地村落文旅体验设计</title>
+    <!-- 引入 Tailwind CSS 进行快速排版 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts: Noto Sans SC 提供现代感的中文字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans SC"', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#0a0b0d',
+                        darker: '#050505',
+                        panel: '#15171a',
+                        brand: '#2d6a4f', /* 湿地黛绿 */
+                        brandLight: '#40916c',
+                        accent: '#e07a5f', /* 乡土赤陶 */
+                        bgGray: '#f4f5f7',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #e5e7eb;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
+            /* 自定义滚动条 */
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
 
-\f0\fs24 \cf0 <!DOCTYPE html>\
-<html lang="zh-CN">\
-<head>\
-    <meta charset="UTF-8">\
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
-    <title>\uc0\u20316 \u21697 \u38598  - \u20065 \u37326 \u23547 \u36394  | \u28287 \u22320 \u26449 \u33853 \u25991 \u26053 \u20307 \u39564 \u35774 \u35745 </title>\
-    <script src="https://cdn.tailwindcss.com"></script>\
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">\
-    <script>\
-        tailwind.config = \{\
-            theme: \{\
-                extend: \{\
-                    fontFamily: \{\
-                        sans: ['"Noto Sans SC"', 'sans-serif'],\
-                        serif: ['"Playfair Display"', 'serif'],\
-                    \},\
-                    colors: \{\
-                        dark: '#08090a',\
-                        panel: '#111215',\
-                        brand: '#2d6a4f',\
-                        brandLight: '#52b788',\
-                        accent: '#d4a373',\
-                        softGray: '#f8f9fa',\
-                    \}\
-                \}\
-            \}\
-        \}\
-    </script>\
-    <style>\
-        body \{ background-color: #f0f2f5; \}\
-        \
-        /* \uc0\u24378 \u21046  16:9 \u40644 \u37329 \u27604 \u20363 \u21345 \u29255  */\
-        .aspect-ratio-box \{\
-            position: relative;\
-            width: 100%;\
-            aspect-ratio: 16 / 9;\
-            min-height: 800px;\
-            max-width: 1600px;\
-            margin: 0 auto 100px auto;\
-            background: #fff;\
-            border-radius: 40px;\
-            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.12);\
-            overflow: hidden;\
-            display: flex;\
-        \}\
-\
-        .dark-card \{ background: #08090a; color: #fff; \}\
-\
-        /* \uc0\u35013 \u39280 \u32972 \u26223  */\
-        .decor-blob \{\
-            position: absolute;\
-            filter: blur(120px);\
-            z-index: 0;\
-            opacity: 0.3;\
-        \}\
-\
-        /* \uc0\u27169 \u25311 \u25163 \u26426 \u22771 \u65306 \u26497 \u32454 \u36793 \u26694 \u22686 \u21152 \u31934 \u33268 \u24863  */\
-        .phone-mockup \{\
-            width: 280px;\
-            height: 580px;\
-            background: #fff;\
-            border-radius: 48px;\
-            border: 8px solid #1a1a1a;\
-            position: relative;\
-            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.2);\
-            overflow: hidden;\
-        \}\
-\
-        /* \uc0\u28378 \u21160 \u20837 \u22330 \u25928 \u26524  */\
-        .reveal \{ opacity: 0; transform: translateY(60px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); \}\
-        .reveal.active \{ opacity: 1; transform: translateY(0); \}\
-\
-        /* \uc0\u20869 \u23481 \u23481 \u22120 \u22686 \u21152 \u21628 \u21560 \u24863  */\
-        .content-padding \{ padding: 80px; \}\
-\
-        .line-accent \{\
-            width: 40px;\
-            height: 2px;\
-            background: currentColor;\
-            margin-bottom: 24px;\
-        \}\
-    </style>\
-</head>\
-<body class="font-sans antialiased">\
-\
-    <div class="py-20 px-6">\
-\
-        <!-- Slide 1: \uc0\u23553 \u38754  - \u26497 \u31616 \u20027 \u20041 \u19982 \u22823 \u21628 \u21560 \u24863  -->\
-        <div class="aspect-ratio-box dark-card reveal">\
-            <div class="decor-blob bg-brand w-[800px] h-[800px] -top-1/4 -right-1/4 opacity-20"></div>\
-            <div class="decor-blob bg-blue-900 w-[600px] h-[600px] -bottom-1/4 -left-1/4 opacity-10"></div>\
-            \
-            <div class="m-auto text-center z-10 px-10">\
-                <div class="flex items-center justify-center gap-4 mb-10">\
-                    <span class="w-12 h-px bg-brandLight"></span>\
-                    <span class="text-brandLight tracking-[0.4em] font-bold text-sm uppercase">Thesis to Practice</span>\
-                    <span class="w-12 h-px bg-brandLight"></span>\
-                </div>\
-                <h1 class="text-8xl font-black tracking-tighter mb-8 leading-[1.1]">\uc0\u20065 \u37326 \u23547 \u36394 </h1>\
-                <h2 class="text-2xl font-light text-gray-400 tracking-[0.2em] mb-16">\uc0\u28287 \u22320 \u26449 \u33853 \u25991 \u26053 \u20307 \u39564 \u26381 \u21153 \u35774 \u35745 \u30740 \u31350 \u19982  UI \u23454 \u36341 </h2>\
-                \
-                <div class="grid grid-cols-3 gap-16 text-left max-w-2xl mx-auto border-t border-white/10 pt-10">\
-                    <div>\
-                        <p class="text-gray-500 text-xs uppercase mb-2 tracking-widest font-bold">Designer</p>\
-                        <p class="text-white text-lg font-medium italic font-serif">Zou Zhichen</p>\
-                    </div>\
-                    <div>\
-                        <p class="text-gray-500 text-xs uppercase mb-2 tracking-widest font-bold">Category</p>\
-                        <p class="text-white text-lg font-medium">Service / UI / UX</p>\
-                    </div>\
-                    <div>\
-                        <p class="text-gray-500 text-xs uppercase mb-2 tracking-widest font-bold">Location</p>\
-                        <p class="text-white text-lg font-medium">Xinyan, China</p>\
-                    </div>\
-                </div>\
-            </div>\
-        </div>\
-\
-        <!-- Slide 2: \uc0\u23439 \u35266 \u27934 \u23519  - \u38463 \u37324 \u20116 \u23548 \u23478  (\u35785 \u27714 \u31687 ) -->\
-        <div class="aspect-ratio-box reveal">\
-            <div class="w-2/5 content-padding bg-softGray flex flex-col justify-center">\
-                <div class="line-accent text-brand"></div>\
-                <h2 class="text-5xl font-black text-gray-900 mb-8 leading-tight">\uc0\u25366 \u25496 \u26680 \u24515 \u20215 \u20540 <br><span class="text-gray-400">\u26126 \u30830 \u35774 \u35745 \u36215 \u28857 </span></h2>\
-                <div class="space-y-8">\
-                    <section>\
-                        <h4 class="text-sm font-bold text-brand uppercase tracking-widest mb-2">01. \uc0\u19994 \u21153 \u35785 \u27714 </h4>\
-                        <p class="text-gray-600 text-base leading-relaxed">\uc0\u22522 \u20110 \u20449 \u38451 \u28287 \u22320 \u26449 \u33853 \u30340 \u38750 \u36951 \u25991 \u21270 \u65288 \u22914 \u19977 \u22721 \u21561 \u25171 \u20048 \u65289 \u65292 \u36890 \u36807 \u25968 \u23383 \u21270 \u25163 \u27573 \u30424 \u27963 \u38646 \u25955 \u36164 \u28304 \u65292 \u23558 \'93\u27665 \u20439 \u21442 \u35266 \'94\u36716 \u21270 \u20026 \'93\u27785 \u28024 \u24335 \u20307 \u39564 \'94\u12290 </p>\
-                    </section>\
-                    <section>\
-                        <h4 class="text-sm font-bold text-brand uppercase tracking-widest mb-2">02. \uc0\u29992 \u25143 \u35785 \u27714 </h4>\
-                        <p class="text-gray-600 text-base leading-relaxed">\uc0\u24180 \u36731 \u28216 \u23458 \u23545 \'93\u28145 \u24230 \u28216 \'94\u30340 \u28212 \u26395 \u12290 \u35843 \u30740 \u26174 \u31034 \u65292 85%\u30340 \u28216 \u23458 \u24076 \u26395 \u33719 \u24471 \u20010 \u24615 \u21270 \u23450 \u21046 \u26041 \u26696 \u65292 \u19988 \u23545 \u23454 \u26102 \u22320 \u22270 \u23548 \u35272 \u30340 \u31934 \u20934 \u24230 \u26377 \u26497 \u39640 \u35201 \u27714 \u12290 </p>\
-                    </section>\
-                </div>\
-            </div>\
-            <div class="w-3/5 content-padding flex items-center">\
-                <div class="grid grid-cols-2 gap-10 w-full">\
-                    <div class="p-10 bg-white border border-gray-100 shadow-xl rounded-3xl">\
-                        <div class="text-6xl font-black text-gray-100 mb-4">Pain</div>\
-                        <h5 class="text-xl font-bold mb-4">\uc0\u20449 \u24687 \u23396 \u23707 </h5>\
-                        <p class="text-gray-500 text-sm">\uc0\u26223 \u28857 \u12289 \u32654 \u39135 \u12289 \u25991 \u21270 \u35762 \u35299 \u39640 \u24230 \u30862 \u29255 \u21270 \u65292 \u28216 \u23458 \u22312 \u34892 \u20013 \u36855 \u33579 \u24863 \u20005 \u37325 \u12290 </p>\
-                    </div>\
-                    <div class="p-10 bg-brand text-white shadow-xl rounded-3xl transform translate-y-12">\
-                        <div class="text-6xl font-black text-white/10 mb-4">Value</div>\
-                        <h5 class="text-xl font-bold mb-4">\uc0\u20215 \u20540 \u20849 \u21019 </h5>\
-                        <p class="text-white/70 text-sm">\uc0\u36890 \u36807 \u26381 \u21153 \u35774 \u35745 \u20018 \u32852 \u25919 \u24220 \u12289 \u21830 \u25143 \u12289 \u26449 \u27665 \u65292 \u26500 \u24314 \u20065 \u26449 \u25391 \u20852 \u30340 \u38381 \u29615 \u27169 \u22411 \u12290 </p>\
-                    </div>\
-                </div>\
-            </div>\
-        </div>\
-\
-        <!-- Slide 3: \uc0\u36923 \u36753 \u28145 \u24230  - \u26680 \u24515 \u26381 \u21153 \u34013 \u22270  (\u26032 \u22686 ) -->\
-        <div class="aspect-ratio-box dark-card reveal">\
-            <div class="w-full content-padding flex flex-col">\
-                <div class="mb-12">\
-                    <h2 class="text-4xl font-black mb-4">\uc0\u26381 \u21153 \u34013 \u22270 \u65306 \u35302 \u28857 \u20840 \u38142 \u36335 \u25512 \u23548 </h2>\
-                    <p class="text-gray-500 max-w-2xl">\uc0\u25105 \u20204 \u23558 \u28216 \u23458 \u30340 \u34892 \u20026 \u36335 \u24452 \u21010 \u20998 \u20026 \u65306 \u34892 \u21069 \u26399 \u26395 \u12289 \u34892 \u20013 \u27785 \u28024 \u12289 \u34892 \u21518 \u27785 \u28096 \u65292 \u35814 \u32454 \u25286 \u35299 \u27599 \u19968 \u20010 \u35302 \u28857 \u30340 \u35774 \u35745 \u26426 \u20250 \u12290 </p>\
-                </div>\
-                <div class="flex-1 bg-white/5 border border-white/10 rounded-3xl p-10 overflow-hidden">\
-                    <div class="grid grid-cols-4 gap-4 h-full">\
-                        <!-- \uc0\u38454 \u27573 \u21015  -->\
-                        <div class="space-y-4">\
-                            <div class="h-12 flex items-center text-xs font-bold text-brandLight uppercase tracking-tighter">Phase \uc0\u38454 \u27573 </div>\
-                            <div class="h-24 p-4 border border-white/10 rounded-xl text-sm flex items-center bg-white/5">\uc0\u34892 \u21069 \u65306 \u25506 \u32034 \u19982 \u20915 \u31574 </div>\
-                            <div class="h-24 p-4 border border-white/10 rounded-xl text-sm flex items-center bg-white/5">\uc0\u34892 \u20013 \u65306 \u28216 \u29609 \u19982 \u24863 \u30693 </div>\
-                            <div class="h-24 p-4 border border-white/10 rounded-xl text-sm flex items-center bg-white/5">\uc0\u34892 \u21518 \u65306 \u20998 \u20139 \u19982 \u22797 \u36141 </div>\
-                        </div>\
-                        <!-- \uc0\u29992 \u25143 \u34892 \u20026  -->\
-                        <div class="space-y-4">\
-                            <div class="h-12 flex items-center text-xs font-bold text-gray-500 uppercase tracking-tighter">Action \uc0\u29992 \u25143 \u34892 \u20026 </div>\
-                            <div class="h-24 p-4 text-xs text-gray-400">\uc0\u21047 \u36164 \u35759 \u12289 \u36873 \u36335 \u32447 \u12289 \u39044 \u35746 \u26381 \u21153 </div>\
-                            <div class="h-24 p-4 text-xs text-gray-400">LBS\uc0\u23548 \u33322 \u12289 AR\u25195 \u30721 \u25991 \u21270 \u12289 \u23454 \u22320 \u25171 \u21345 </div>\
-                            <div class="h-24 p-4 text-xs text-gray-400">\uc0\u33719 \u24471 \u25968 \u23383 \u25104 \u23601 \u12289 \u36141 \u20080 \u25991 \u21019 \u12289 \u20889 \u19979 \u28216 \u35760 </div>\
-                        </div>\
-                        <!-- \uc0\u30028 \u38754 \u35302 \u28857  -->\
-                        <div class="space-y-4">\
-                            <div class="h-12 flex items-center text-xs font-bold text-gray-500 uppercase tracking-tighter">UI Touchpoints \uc0\u30028 \u38754 \u35302 \u28857 </div>\
-                            <div class="h-24 p-4 text-brandLight font-bold text-xs italic">\uc0\u39318 \u39029 \u20998 \u21457  / \u36335 \u32447 \u25512 \u33616 </div>\
-                            <div class="h-24 p-4 text-brandLight font-bold text-xs italic">\uc0\u20132 \u20114 \u22320 \u22270  / \u21160 \u24577 AR / \u26223 \u28857 \u35814 \u24773 </div>\
-                            <div class="h-24 p-4 text-brandLight font-bold text-xs italic">\uc0\u25171 \u21345 \u24509 \u31456  / \u20010 \u20154 \u20013 \u24515  / \u21830 \u22478 </div>\
-                        </div>\
-                        <!-- \uc0\u35774 \u35745 \u21457 \u21147 \u28857  -->\
-                        <div class="space-y-4">\
-                            <div class="h-12 flex items-center text-xs font-bold text-gray-500 uppercase tracking-tighter">Strategy \uc0\u35774 \u35745 \u37325 \u28857 </div>\
-                            <div class="h-24 p-4 bg-brand/20 rounded-xl border border-brand/50 text-xs">\uc0\u24773 \u24863 \u20195 \u20837 \u24863 \u12289 \u39640 \u25928 \u36716 \u21270 </div>\
-                            <div class="h-24 p-4 bg-brand/20 rounded-xl border border-brand/50 text-xs">\uc0\u25239 \u24178 \u25200 \u12289 \u20302 \u21151 \u32791 \u23548 \u33322 \u12289 \u36259 \u21619 \u21270 </div>\
-                            <div class="h-24 p-4 bg-brand/20 rounded-xl border border-brand/50 text-xs">\uc0\u25104 \u23601 \u31995 \u32479 \u12289 UGC\u31038 \u20132 \u35010 \u21464 </div>\
-                        </div>\
-                    </div>\
-                </div>\
-            </div>\
-        </div>\
-\
-        <!-- Slide 4: \uc0\u35270 \u35273 \u25512 \u23548  - \u39318 \u39029 \u19982 \u20010 \u20154 \u20013 \u24515  (UI \u23637 \u31034 ) -->\
-        <div class="aspect-ratio-box reveal">\
-            <div class="w-1/2 content-padding flex flex-col justify-center">\
-                <div class="line-accent text-brand"></div>\
-                <h2 class="text-4xl font-black mb-6 text-gray-900">\uc0\u35270 \u35273 \u35774 \u35745 \u26041 \u26696 \u25512 \u23548 <br><span class="text-2xl font-light text-gray-400 mt-2 block">\u39318 \u39029  & \u20010 \u20154 \u36275 \u36857 </span></h2>\
-                <div class="space-y-10">\
-                    <article>\
-                        <h4 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-brand pl-3">\uc0\u20449 \u24687 \u38477 \u22122 \u65306 \u22522 \u20110 \u22330 \u26223 \u30340 \u21151 \u33021 \u20248 \u20808 \u32423 </h4>\
-                        <p class="text-gray-500 text-sm leading-relaxed">\
-                            \uc0\u26681 \u25454 \u29992 \u25143 \u35843 \u30740 \u65292 \u39318 \u39029 \u20248 \u20808 \u23637 \u31034 \'93\u22825 \u27668 \u12289 LBS\u36317 \u31163 \u21450 \u26368 \u36817 \u30340 \u26223 \u28857 \u24314 \u35758 \'94\u12290 \u21345 \u29255 \u24335 \u35774 \u35745 \u36981 \u24490 \u20102 <strong class="text-brand">\u21476 \u33150 \u22561 \u21407 \u21017 </strong>\u65292 \u23558 \u35270 \u35273 \u28966 \u28857 \u24341 \u23548 \u33267 \u26680 \u24515 \u37329 \u21018 \u21306 \u65292 \u30830 \u20445 \u29992 \u25143 \u22312 \u25143 \u22806 \u29615 \u22659 \u19979 \u20063 \u33021 \u24555 \u36895 \u25805 \u20316 \u12290 \
-                        </p>\
-                    </article>\
-                    <article>\
-                        <h4 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-brand pl-3">\uc0\u25968 \u23383 \u36164 \u20135 \u65306 \u24314 \u31435 \u24773 \u24863 \u36830 \u25509 </h4>\
-                        <p class="text-gray-500 text-sm leading-relaxed">\
-                            \uc0\u12304 \u25105 \u30340 \u12305 \u39029 \u38754 \u24378 \u21270 \u20102 \'93\u25968 \u23383 \u24509 \u31456 \'94\u19982 \'93\u36275 \u36857 \u22320 \u22270 \'94\u12290 \u36890 \u36807 \u22270 \u24418 \u21270 \u30340 \u37324 \u31243 \u30865 \u65292 \u35753 \u26543 \u29157 \u30340 \u25968 \u25454 \u36716 \u21464 \u20026 \u21487 \u20998 \u20139 \u30340 \u24773 \u24863 \u20215 \u20540 \u65292 \u20174 \u32780 \u25552 \u21319 \u29992 \u25143 \u27963 \u36291 \u24230 \u12290 \
-                        </p>\
-                    </article>\
-                </div>\
-            </div>\
-            <div class="w-1/2 bg-softGray flex items-center justify-center gap-12 p-20">\
-                <div class="phone-mockup transform rotate-[-2deg] hover:rotate-0 transition-all duration-700">\
-                    <img src="./\uc0\u39318 \u39029 .jpg" class="w-full h-full object-cover" alt="\u39318 \u39029 ">\
-                </div>\
-                <div class="phone-mockup transform translate-y-12 rotate-[2deg] hover:rotate-0 transition-all duration-700">\
-                    <img src="./\uc0\u25105 \u30340 .jpg" class="w-full h-full object-cover" alt="\u25105 \u30340 ">\
-                </div>\
-            </div>\
-        </div>\
-\
-        <!-- Slide 5: \uc0\u20132 \u20114 \u25512 \u23548  - \u22320 \u22270 \u19982 \u23450 \u21046  (UI \u23637 \u31034 ) -->\
-        <div class="aspect-ratio-box dark-card reveal">\
-            <div class="w-3/5 bg-[#1a1b1e] p-20 flex flex-wrap gap-8 justify-center overflow-hidden">\
-                <div class="phone-mockup scale-90 border-gray-700 shadow-2xl">\
-                    <img src="./\uc0\u23450 \u20301 \u39029 .jpg" class="w-full h-full object-cover" alt="\u23450 \u20301 ">\
-                </div>\
-                <div class="phone-mockup scale-90 border-gray-700 shadow-2xl -translate-y-8">\
-                    <img src="./\uc0\u36335 \u32447 \u39029 .jpg" class="w-full h-full object-cover" alt="\u36335 \u32447 ">\
-                </div>\
-                <div class="phone-mockup scale-90 border-gray-700 shadow-2xl translate-y-8">\
-                    <img src="./\uc0\u36335 \u32447 \u39029 \'97\u23450 \u21046 \u36335 \u32447 .jpg" class="w-full h-full object-cover" alt="\u23450 \u21046 ">\
-                </div>\
-            </div>\
-            <div class="w-2/5 content-padding flex flex-col justify-center">\
-                <div class="line-accent text-brandLight"></div>\
-                <h2 class="text-4xl font-black mb-6">LBS\uc0\u22330 \u26223 \u21270 \u19982 \u31354 \u38388 \u24863 \u30693 </h2>\
-                <div class="space-y-10">\
-                    <article>\
-                        <h4 class="text-lg font-bold text-brandLight mb-3">\uc0\u29289 \u29702 \u19990 \u30028 \u19982 \u25968 \u23383 \u31354 \u38388 \u30340 \u26144 \u23556 </h4>\
-                        <p class="text-gray-500 text-sm leading-relaxed">\
-                            \uc0\u12304 \u23450 \u20301 \u39029 \u12305 \u19981 \u20877 \u26159 \u20912 \u20919 \u30340 \u32463 \u32428 \u24230 \u65292 \u32780 \u26159 \u36890 \u36807 \u25554 \u30011 \u39118 \u30340 \u22270 \u38025 (POI)\u19982 \u29615 \u22659 \u33394 \u34701 \u21512 \u65292 \u36171 \u20104 \u29992 \u25143 \u26356 \u24378 \u30340 \u25991 \u21270 \u24402 \u23646 \u24863 \u12290 \
-                        </p>\
-                    </article>\
-                    <article>\
-                        <h4 class="text-lg font-bold text-brandLight mb-3">\uc0\u20132 \u20114 \u27169 \u22411 \u65306 \u25302 \u25341 \u24335 \u36335 \u24452 \u26500 \u24314 </h4>\
-                        <p class="text-gray-500 text-sm leading-relaxed">\
-                            \uc0\u12304 \u23450 \u21046 \u36335 \u32447 \u12305 \u24341 \u20837 \u20102 \u38750 \u32447 \u24615 \u20132 \u20114 \u12290 \u29992 \u25143 \u21487 \u20197 \u20687 \u25340 \u22270 \u19968 \u26679 \u21246 \u36873 \u24863 \u20852 \u36259 \u30340 \u25991 \u21270 \u28857 \u65292 \u31995 \u32479 \u23454 \u26102 \u35745 \u31639 \u26368 \u20248 \u36335 \u24452 \u12290 \u36825 \u31181 \'93DIY\'94\u24335 \u20307 \u39564 \u33021 \u26174 \u33879 \u22686 \u21152 \u29992 \u25143 \u23545 \u34892 \u31243 \u30340 \u21442 \u19982 \u24863 \u12290 \
-                        </p>\
-                    </article>\
-                </div>\
-            </div>\
-        </div>\
-\
-        <!-- Slide 6: \uc0\u32454 \u33410 \u28145 \u25366  - \u28216 \u25103 \u21270 \u26426 \u21046  (\u26032 \u22686 ) -->\
-        <div class="aspect-ratio-box reveal">\
-            <div class="w-1/2 content-padding flex flex-col justify-center order-last">\
-                <div class="line-accent text-accent"></div>\
-                <h2 class="text-4xl font-black mb-6 text-gray-900">\uc0\u25104 \u23601 \u31995 \u32479 \u19982 \u28216 \u25103 \u21270 \u39537 \u21160 </h2>\
-                <div class="space-y-8">\
-                    <p class="text-gray-600 text-base leading-relaxed">\
-                        \uc0\u20511 \u37492 \u12298 \u20843 \u35282 \u34892 \u20026 \u27169 \u22411 \u12299 \u65292 \u25105 \u20204 \u20026 \u28287 \u22320 \u26449 \u33853 \u35774 \u35745 \u20102 \u19968 \u22871 \u22522 \u20110 \'93\u31232 \u32570 \u24615 \'94\u19982 \'93\u25317 \u26377 \u24863 \'94\u30340 \u28608 \u21169 \u38381 \u29615 \u12290 \
-                    </p>\
-                    <div class="bg-softGray p-8 rounded-3xl space-y-4">\
-                        <div class="flex items-center gap-4">\
-                            <div class="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center font-bold text-accent italic">1</div>\
-                            <div class="text-sm font-bold">\uc0\u21160 \u26426 \u65306 \u20449 \u38451 \u27665 \u27468 \u30862 \u29255 \u25910 \u38598 </div>\
-                        </div>\
-                        <div class="flex items-center gap-4">\
-                            <div class="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center font-bold text-accent italic">2</div>\
-                            <div class="text-sm font-bold">\uc0\u34892 \u20026 \u65306 \u23454 \u22320 \u25195 \u30721 +\u35821 \u38899 \u20542 \u21548 </div>\
-                        </div>\
-                        <div class="flex items-center gap-4">\
-                            <div class="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center font-bold text-accent italic">3</div>\
-                            <div class="text-sm font-bold">\uc0\u22870 \u21169 \u65306 \u35299 \u38145 \u38750 \u36951 \u23450 \u21046 \u30005 \u23376 \u24509 \u31456 </div>\
-                        </div>\
-                    </div>\
-                </div>\
-            </div>\
-            <div class="w-1/2 p-20 flex items-center justify-center bg-gray-50">\
-                 <div class="relative group">\
-                    <div class="absolute -inset-10 bg-accent/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>\
-                    <div class="phone-mockup relative z-10 scale-105 border-white">\
-                        <img src="./\uc0\u36335 \u32447 \u39029 -\u25171 \u21345 \u24509 \u31456 .jpg" class="w-full h-full object-cover" alt="\u24509 \u31456 ">\
-                    </div>\
-                 </div>\
-            </div>\
-        </div>\
-\
-        <!-- Slide 7: \uc0\u24635 \u32467  - \u35774 \u35745 \u24605 \u32771  -->\
-        <div class="aspect-ratio-box dark-card reveal">\
-            <div class="decor-blob bg-brandLight w-[600px] h-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20"></div>\
-            <div class="m-auto text-center z-10 max-w-3xl px-10">\
-                <h2 class="text-5xl font-black mb-12 tracking-tight">\uc0\u19981 \u20165 \u20165 \u26159  UI\u65292 \u26356 \u26159 \u26377 \u28201 \u24230 \u30340 \u26381 \u21153 </h2>\
-                <p class="text-xl text-gray-400 font-light leading-loose mb-16">\
-                    \uc0\u36890 \u36807 \u36825 \u22871 \u28287 \u22320 \u26449 \u33853  App \u30340 \u20840 \u38142 \u36335 \u35774 \u35745 \u65292 \u25105 \u28145 \u21051 \u20307 \u20250 \u21040 \u22312 <strong class="text-white">\u20065 \u22303 \u25991 \u21270 \u35270 \u22495 </strong>\u19979 \u65292 \u35774 \u35745 \u32773 \u24212 \u24403 \u25198 \u28436 \'93\u25991 \u21270 \u32763 \u35793 \u23448 \'94\u30340 \u35282 \u33394 \u12290 \u23558 \u26214 \u28073 \u30340 \u38750 \u36951 \u65292 \u36716 \u21270 \u20026 \u24180 \u36731 \u20154 \u35302 \u25163 \u21487 \u21450 \u30340 \u25968 \u23383 \u20132 \u20114 \u12290 \
-                </p>\
-                <div class="flex items-center justify-center gap-10">\
-                    <div class="text-center">\
-                        <div class="text-3xl font-bold text-brandLight mb-1">94%</div>\
-                        <div class="text-xs text-gray-600 uppercase font-bold tracking-widest">\uc0\u29992 \u25143 \u28385 \u24847 \u24230 \u39044 \u26399 </div>\
-                    </div>\
-                    <div class="w-px h-10 bg-white/10"></div>\
-                    <div class="text-center">\
-                        <div class="text-3xl font-bold text-brandLight mb-1">12+</div>\
-                        <div class="text-xs text-gray-600 uppercase font-bold tracking-widest">\uc0\u26680 \u24515 \u26381 \u21153 \u35302 \u28857 </div>\
-                    </div>\
-                    <div class="w-px h-10 bg-white/10"></div>\
-                    <div class="text-center">\
-                        <div class="text-3xl font-bold text-brandLight mb-1">35%</div>\
-                        <div class="text-xs text-gray-600 uppercase font-bold tracking-widest">\uc0\u28508 \u22312 \u36716 \u21270 \u25552 \u21319 </div>\
-                    </div>\
-                </div>\
-                <div class="mt-20 font-serif italic text-gray-500 text-sm tracking-[0.3em]">PRESENTED BY ZOU ZHICHEN</div>\
-            </div>\
-        </div>\
-\
-    </div>\
-\
-    <script>\
-        // \uc0\u20248 \u21270 \u28378 \u21160 \u26174 \u31034 \u36923 \u36753 \
-        function reveal() \{\
-            var reveals = document.querySelectorAll(".reveal");\
-            for (var i = 0; i < reveals.length; i++) \{\
-                var windowHeight = window.innerHeight;\
-                var elementTop = reveals[i].getBoundingClientRect().top;\
-                var elementVisible = 150;\
-                if (elementTop < windowHeight - elementVisible) \{\
-                    reveals[i].classList.add("active");\
-                \}\
-            \}\
-        \}\
-        window.addEventListener("scroll", reveal);\
-        // \uc0\u21021 \u22987 \u21270 \
-        window.onload = reveal;\
-    </script>\
-\
-</body>\
-</html>}
+        .slide-container {
+            width: 100%;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 80px; /* 卡片之间的间距更大 */
+            align-items: center;
+        }
+
+        /* 宽屏比例的幻灯片，给予充分的呼吸感 */
+        .slide {
+            width: 100%;
+            max-width: 1500px; /* 增大最大宽度 */
+            min-height: 800px; /* 保证最小高度，避免挤压 */
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+
+        .slide.dark-mode {
+            background: #0a0b0d;
+            color: #ffffff;
+        }
+
+        /* 背景装饰与光影 */
+        .decor-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        
+        .grid-bg {
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .content-z {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 占位图样式优化 */
+        .img-placeholder {
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            font-size: 0.875rem;
+            object-fit: contain; 
+        }
+
+        /* 手机壳阴影质感 */
+        .mockup-wrapper {
+            box-shadow: 
+                0 30px 60px -10px rgba(0,0,0,0.3),
+                inset 0 0 0 1px rgba(255,255,255,0.2);
+            border: 10px solid #1a1a1a;
+            border-radius: 44px;
+            background: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .mockup-wrapper.light {
+            border-color: #ffffff;
+            box-shadow: 
+                0 30px 60px -10px rgba(0,0,0,0.1),
+                inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        /* 进场动画 */
+        .fade-up { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .tag {
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-container">
+
+        <!-- Slide 1: 封面 (大视觉留白) -->
+        <div class="slide dark-mode flex-col justify-center items-center text-center relative fade-up">
+            <div class="decor-glow bg-brand w-[800px] h-[800px] top-[-300px] right-[-200px]"></div>
+            <div class="decor-glow bg-blue-900 w-[600px] h-[600px] bottom-[-200px] left-[-200px]"></div>
+            <div class="grid-bg"></div>
+            
+            <div class="content-z max-w-4xl px-8">
+                <div class="text-brandLight tracking-[0.2em] text-sm mb-8 font-bold uppercase">UI/UX Case Study & Service Design</div>
+                <h1 class="text-7xl font-black mb-8 leading-tight tracking-tight">乡野寻踪<br><span class="text-4xl font-light text-gray-300 mt-4 block">湿地村落文旅体验服务设计研究</span></h1>
+                <p class="text-gray-400 text-xl mb-16 font-light leading-relaxed max-w-3xl mx-auto">
+                    基于乡土文化视域，以设计赋能乡村振兴。<br>重构文旅服务链路，打造“数字化+文化沉浸”的全新体验。
+                </p>
+                <div class="flex gap-8 justify-center">
+                    <div class="flex flex-col items-center">
+                        <span class="text-white text-lg font-bold">邹之晨</span>
+                        <span class="text-gray-500 text-sm mt-1">Designer</span>
+                    </div>
+                    <div class="w-px h-10 bg-gray-800"></div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-white text-lg font-bold">2026.03</span>
+                        <span class="text-gray-500 text-sm mt-1">Date</span>
+                    </div>
+                    <div class="w-px h-10 bg-gray-800"></div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-white text-lg font-bold">Mobile App</span>
+                        <span class="text-gray-500 text-sm mt-1">Platform</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 阿里五导家 1/2 - 诉求洞察 -->
+        <div class="slide bg-white flex relative fade-up">
+            <div class="w-1/3 p-20 bg-bgGray flex flex-col justify-between border-r border-gray-200">
+                <div>
+                    <div class="tag border border-brand text-brand mb-6 inline-block">Step 01-02</div>
+                    <h2 class="text-4xl font-black mb-4 text-gray-900 leading-tight">挖掘业务土壤<br>洞察用户心声</h2>
+                    <p class="text-gray-500 text-base leading-relaxed mt-6">
+                        设计的起点并非画布，而是对商业环境与目标用户的深刻理解。基于“阿里五导家”前两步，我们明确了设计的基座。
+                    </p>
+                </div>
+                <!-- 引用论文 -->
+                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm mt-12 relative">
+                    <div class="absolute -top-3 -left-3 text-4xl text-gray-200">❝</div>
+                    <p class="text-sm text-gray-500 leading-relaxed italic z-10 relative">
+                        “在全面推进乡村振兴与文旅融合的背景下... 信阳民歌、三壁吹打乐等极具地域特色的乡土文化，亟待通过服务设计完成数字化转译。”
+                    </p>
+                    <p class="text-xs text-gray-400 mt-4 text-right">— 摘自《乡土文化视域下湿地村落文旅体验服务设计研究》</p>
+                </div>
+            </div>
+
+            <div class="w-2/3 p-20 flex flex-col gap-12 justify-center">
+                <!-- 业务诉求 -->
+                <div class="flex gap-8">
+                    <div class="w-16 h-16 rounded-full bg-brand/10 flex items-center justify-center text-brand font-bold text-2xl shrink-0">1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-900">明确业务诉求 (Business Needs)</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">当前湿地村落旅游面临“文化感知弱、停留时间短、二次消费低”的痛点。业务的核心诉求在于：通过打造线上平台，<strong class="text-brand">盘活闲置的乡土文化资源</strong>，延长游客的游玩生命周期，最终构建“引流-体验-消费”的文旅商业闭环。</p>
+                        <div class="flex gap-4">
+                            <span class="px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-medium">文化传承转译</span>
+                            <span class="px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-medium">延长LTV(生命周期价值)</span>
+                            <span class="px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-medium">乡村经济上行</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-full h-px bg-gray-100"></div>
+
+                <!-- 用户诉求 -->
+                <div class="flex gap-8">
+                    <div class="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold text-2xl shrink-0">2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-900">洞见用户诉求 (User Needs)</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">通过用户旅程地图(User Journey Map)分析，年轻一代的新型游客厌倦了“同质化”的打卡，他们渴望获得有深度、有掌控感的体验。但面对碎片化信息，他们存在规划困难的痛点。</p>
+                        <div class="grid grid-cols-3 gap-6 mt-4">
+                            <div class="bg-red-50 p-4 rounded-xl">
+                                <div class="text-red-500 font-bold mb-2">痛点 Pain</div>
+                                <div class="text-sm text-gray-600">攻略繁杂零碎，缺乏行中场景的有效指引与文化解说。</div>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-xl">
+                                <div class="text-blue-500 font-bold mb-2">爽点 Gain</div>
+                                <div class="text-sm text-gray-600">能够自由定制路线，掌控行程，并在探索中获得成就感。</div>
+                            </div>
+                            <div class="bg-orange-50 p-4 rounded-xl">
+                                <div class="text-orange-500 font-bold mb-2">痒点 Itch</div>
+                                <div class="text-sm text-gray-600">与乡土非遗（如民歌/吹打乐）产生沉浸式的情感共鸣。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 阿里五导家 2/2 - 目标推导 -->
+        <div class="slide dark-mode flex flex-row-reverse relative fade-up">
+            <div class="w-1/3 p-20 bg-panel flex flex-col justify-between border-l border-gray-800 z-10">
+                <div>
+                    <div class="tag border border-brandLight text-brandLight mb-6 inline-block">Step 03-04</div>
+                    <h2 class="text-4xl font-black mb-4 text-white leading-tight">指标拆解<br>锁定设计发力点</h2>
+                    <p class="text-gray-400 text-base leading-relaxed mt-6">
+                        将抽象的诉求，转化为可衡量的数据指标，并推导出具体的UI/UX交互策略。
+                    </p>
+                </div>
+            </div>
+
+            <div class="w-2/3 p-20 flex flex-col gap-16 justify-center relative">
+                 <div class="decor-glow bg-brand w-[400px] h-[400px] top-[10%] left-[20%] opacity-20"></div>
+                 
+                <!-- 业务目标 -->
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-bold mb-6 text-white flex items-center gap-4">
+                        <span class="text-brandLight text-3xl">03.</span> 定义业务目标 (Business Goals)
+                    </h3>
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="border border-gray-800 bg-darker p-6 rounded-2xl">
+                            <div class="text-3xl font-black text-white mb-2">转化率提升</div>
+                            <p class="text-sm text-gray-500">通过整合“游-购-娱”，提升商城农特产品与线下服务的预约转化率。</p>
+                        </div>
+                        <div class="border border-gray-800 bg-darker p-6 rounded-2xl">
+                            <div class="text-3xl font-black text-white mb-2">UGC & 裂变</div>
+                            <p class="text-sm text-gray-500">引入游戏化机制，提升打卡完成率与社交媒体分享率（K因子提升）。</p>
+                        </div>
+                        <div class="border border-gray-800 bg-darker p-6 rounded-2xl">
+                            <div class="text-3xl font-black text-white mb-2">用户粘性 MAU</div>
+                            <p class="text-sm text-gray-500">打造个人文化资产（徽章、足迹），增加用户离开村落后的平台留存。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 设计目标 -->
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-bold mb-6 text-white flex items-center gap-4">
+                        <span class="text-brandLight text-3xl">04.</span> 拆解设计目标 (Design Goals)
+                    </h3>
+                    <div class="bg-gradient-to-br from-gray-900 to-black p-8 rounded-3xl border border-gray-800">
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand/20 text-brandLight flex items-center justify-center font-bold mt-1">A</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-gray-200 mb-1">降噪与导览：降低认知负荷，强化LBS场景化</h4>
+                                    <p class="text-sm text-gray-500">应对策略：采用卡片式信息架构，弱化复杂层级；结合LBS地理位置，提供符合“行中”场景的情境化导航与路线规划。</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand/20 text-brandLight flex items-center justify-center font-bold mt-1">B</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-gray-200 mb-1">情感化映射：将乡土文化“视觉符号化”</h4>
+                                    <p class="text-sm text-gray-500">应对策略：提取信阳湿地的色彩与纹理，运用到UI的视觉表现层；利用多媒体（音频、手绘）增强文化沉浸感。</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand/20 text-brandLight flex items-center justify-center font-bold mt-1">C</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-gray-200 mb-1">游戏化闭环：运用八角行为模型 (Octalysis)</h4>
+                                    <p class="text-sm text-gray-500">应对策略：设计“打卡-徽章-积分-兑换”闭环，利用用户的收集癖和稀缺性心理，促进行为发生。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Design System 设计规范 -->
+        <div class="slide bg-white flex flex-col p-20 relative fade-up">
+            <div class="text-center mb-16">
+                <div class="tag border border-gray-300 text-gray-500 mb-4 inline-block">Design System</div>
+                <h2 class="text-4xl font-black text-gray-900">视觉基因提取</h2>
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">以“乡土、自然、呼吸感”为核心基调，提取湿地色彩与现代排版规范，确保全链路体验的视觉一致性。</p>
+            </div>
+
+            <div class="flex gap-16 h-full">
+                <!-- Color Palette -->
+                <div class="w-1/2 flex flex-col gap-6">
+                    <h3 class="text-xl font-bold text-gray-800 border-l-4 border-brand pl-3">色彩体系 Color Palette</h3>
+                    <div class="grid grid-cols-2 gap-4 flex-1">
+                        <div class="bg-[#2d6a4f] rounded-2xl p-6 flex flex-col justify-end text-white shadow-lg">
+                            <div class="text-sm opacity-80 mb-1">Primary Color</div>
+                            <div class="font-bold text-xl">湿地黛绿</div>
+                            <div class="font-mono text-sm opacity-70">#2D6A4F</div>
+                        </div>
+                        <div class="bg-[#e07a5f] rounded-2xl p-6 flex flex-col justify-end text-white shadow-lg">
+                            <div class="text-sm opacity-80 mb-1">Accent Color</div>
+                            <div class="font-bold text-xl">乡土赤陶</div>
+                            <div class="font-mono text-sm opacity-70">#E07A5F</div>
+                        </div>
+                        <div class="bg-[#f8f9fa] rounded-2xl p-6 flex flex-col justify-end text-gray-800 border border-gray-200">
+                            <div class="text-sm text-gray-500 mb-1">Background</div>
+                            <div class="font-bold text-xl">芦苇白</div>
+                            <div class="font-mono text-sm text-gray-400">#F8F9FA</div>
+                        </div>
+                        <div class="bg-[#1a1a1a] rounded-2xl p-6 flex flex-col justify-end text-white">
+                            <div class="text-sm opacity-80 mb-1">Text Dark</div>
+                            <div class="font-bold text-xl">青石黑</div>
+                            <div class="font-mono text-sm opacity-70">#1A1A1A</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typography & Components -->
+                <div class="w-1/2 flex flex-col gap-6">
+                    <h3 class="text-xl font-bold text-gray-800 border-l-4 border-brand pl-3">排版与网格 Typography & Grid</h3>
+                    <div class="bg-bgGray rounded-3xl p-10 flex-1 border border-gray-200 flex flex-col justify-center">
+                        <div class="mb-8">
+                            <div class="text-sm text-gray-500 mb-2">Display Font - Noto Sans SC</div>
+                            <div class="text-5xl font-black text-gray-900 mb-2">湿地寻踪</div>
+                            <div class="text-2xl font-bold text-gray-800 mb-2">H1 - 标题层级分明</div>
+                            <div class="text-base text-gray-600 leading-relaxed">Body Text - 正文保持良好的行高与字间距，遵循格式塔原理中的“接近性”，通过留白划分信息区块，降低屏幕阅读的视觉疲劳。</div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <div class="h-12 w-32 bg-brand rounded-full flex items-center justify-center text-white font-bold shadow-md">Primary CTA</div>
+                                <div class="text-sm text-gray-500">大圆角设计，传递亲和力</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="w-12 h-12 bg-white border border-gray-200 rounded-2xl shadow-sm flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-gray-300 rounded-full"></div>
+                                </div>
+                                <div class="w-12 h-12 bg-white border border-gray-200 rounded-2xl shadow-sm flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-gray-300 rounded-md"></div>
+                                </div>
+                                <div class="flex items-center ml-2 text-sm text-gray-500">微质感玻璃态图标</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 视觉方案 1 - 首页与个人中心 -->
+        <div class="slide dark-mode flex p-0 relative fade-up">
+            <!-- 左侧内容分析区 -->
+            <div class="w-1/2 p-20 flex flex-col justify-center bg-panel z-10 border-r border-gray-800">
+                <div class="tag border border-brandLight text-brandLight mb-6 inline-block">05. 视觉推导 / UI 01</div>
+                <h2 class="text-5xl font-black mb-8 leading-tight">流量分发与信息降噪<br><span class="text-3xl font-light text-gray-500 mt-2 block">首页 & 个人数据可视化</span></h2>
+                
+                <div class="space-y-10 mt-4">
+                    <div class="relative pl-6 border-l border-gray-700">
+                        <div class="absolute left-[-5px] top-1 w-2 h-2 rounded-full bg-brandLight"></div>
+                        <h3 class="text-xl font-bold text-white mb-3">信息架构：大视觉+轻入口</h3>
+                        <p class="text-gray-400 text-base leading-relaxed">
+                            【首页】基于<strong class="text-white">席克定律(Hick's Law)</strong>，为避免用户面对庞杂服务产生决策瘫痪，顶部采用沉浸式风光头图建立环境代入感。核心金刚区提炼最高频的4-5个操作入口，下方信息流采用卡片式封装，实现了信息的有效降噪。
+                        </p>
+                    </div>
+                    <div class="relative pl-6 border-l border-gray-700">
+                        <div class="absolute left-[-5px] top-1 w-2 h-2 rounded-full bg-brandLight"></div>
+                        <h3 class="text-xl font-bold text-white mb-3">情感化设计：归属感的建立</h3>
+                        <p class="text-gray-400 text-base leading-relaxed">
+                            【我的】页面弱化了传统的列表工具感。采用“去线留白”的视觉语言，将用户的足迹、徽章、积分进行高度可视化呈现。这符合<strong class="text-white">马斯洛需求层次</strong>中的“尊重与自我实现”，让数字资产成为情感连接的纽带。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧视觉展示区 -->
+            <div class="w-1/2 bg-darker flex items-center justify-center gap-10 p-12 relative overflow-hidden">
+                <div class="decor-glow bg-brandLight w-[500px] h-[500px] top-[10%] left-[20%] opacity-10"></div>
+                
+                <div class="mockup-wrapper w-[300px] h-[640px] transform -translate-y-8 hover:-translate-y-12 transition-transform duration-500">
+                    <img src="./首页.jpg" alt="首页设计" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E首页.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+                
+                <div class="mockup-wrapper w-[300px] h-[640px] transform translate-y-8 hover:translate-y-4 transition-transform duration-500">
+                    <img src="./我的.jpg" alt="我的页面设计" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E我的.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: 视觉方案 2 - 场景与导览 -->
+        <div class="slide bg-white flex flex-row-reverse p-0 relative fade-up">
+            <div class="w-1/2 p-20 flex flex-col justify-center bg-gray-50 z-10 border-l border-gray-200">
+                <div class="tag border border-accent text-accent mb-6 inline-block">05. 视觉推导 / UI 02</div>
+                <h2 class="text-5xl font-black mb-8 leading-tight text-gray-900">LBS场景化与空间感知<br><span class="text-3xl font-light text-gray-500 mt-2 block">定位导览 & 路线规划</span></h2>
+                
+                <div class="space-y-10 mt-4">
+                    <div class="relative pl-6 border-l-2 border-accent">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">物理世界与数字空间的映射</h3>
+                        <p class="text-gray-600 text-base leading-relaxed">
+                            【定位页】作为“行中”最高频的核心触点，抛弃了冷冰冰的标准化地图。采用定制化的手绘感风格与特色POI图钉，直观展示湿地村落的文化坐标，让空间感知更有温度。
+                        </p>
+                    </div>
+                    <div class="relative pl-6 border-l-2 border-accent">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">用户旅程：从被动跟随到主动构建</h3>
+                        <p class="text-gray-600 text-base leading-relaxed">
+                            【路线页】采用“双轨制”设计。为小白用户提供官方精选的线性路线（降低决策成本）；通过【定制路线】功能，赋予深度游用户极大的掌控感。拖拽交互简单直观，满足了个性化探索的“爽点”。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w-1/2 bg-gray-100 flex items-center justify-center gap-6 p-12 relative overflow-hidden">
+                <!-- 装饰背景 -->
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50"></div>
+                <div class="absolute right-0 bottom-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl"></div>
+
+                <div class="mockup-wrapper light w-[260px] h-[560px] transform -rotate-2 z-10 hover:rotate-0 transition-transform duration-300">
+                    <img src="./定位页.jpg" alt="定位页" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'260\' height=\'560\'%3E%3Crect width=\'260\' height=\'560\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E定位页.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+                
+                <div class="mockup-wrapper light w-[260px] h-[560px] transform translate-y-12 z-20 hover:-translate-y-2 transition-transform duration-300">
+                    <img src="./路线页.jpg" alt="路线页" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'260\' height=\'560\'%3E%3Crect width=\'260\' height=\'560\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E路线页.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+
+                <div class="mockup-wrapper light w-[260px] h-[560px] transform rotate-2 z-10 hover:rotate-0 transition-transform duration-300">
+                    <img src="./路线页—定制路线.jpg" alt="定制路线页" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'260\' height=\'560\'%3E%3Crect width=\'260\' height=\'560\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E定制路线.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 视觉方案 3 - 情感与游戏化 -->
+        <div class="slide dark-mode flex p-0 relative fade-up">
+            <div class="w-1/2 p-20 flex flex-col justify-center bg-[#0d1015] z-10 border-r border-gray-800">
+                <div class="tag border border-yellow-500 text-yellow-500 mb-6 inline-block">05. 视觉推导 / UI 03</div>
+                <h2 class="text-5xl font-black mb-8 leading-tight">情感引擎与游戏化闭环<br><span class="text-3xl font-light text-gray-500 mt-2 block">景点详情 & 打卡徽章</span></h2>
+                
+                <div class="space-y-10 mt-4">
+                    <div class="relative pl-6 border-l border-yellow-700">
+                        <h3 class="text-xl font-bold text-white mb-3">多维度的乡土文化叙事</h3>
+                        <p class="text-gray-400 text-base leading-relaxed">
+                            【景点详情】不再是生硬的文字堆砌。结合论文中对<strong class="text-yellow-500">“信阳民歌、三壁吹打乐”</strong>的研究，UI设计融入了音频播放控件与全景图，通过视听多通道刺激，将抽象的非遗文化生动转译。
+                        </p>
+                    </div>
+                    <div class="relative pl-6 border-l border-yellow-700">
+                        <h3 class="text-xl font-bold text-white mb-3">Fogg行为模型与上瘾机制</h3>
+                        <p class="text-gray-400 text-base leading-relaxed">
+                            【打卡徽章】是增长黑客(Growth Hacker)策略的核心体现。基于<strong class="text-white">B=MAP行为模型</strong>：提供精美徽章激发收集动机(Motivation)，LBS自动识别降低打卡门槛(Ability)，到达景点触发推送(Prompt)。拟物化的3D徽章设计赋予数字成就实体质感，极大地促进了用户的UGC分享。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w-1/2 bg-[#050608] flex items-center justify-center gap-12 p-12 relative">
+                 <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-yellow-500/10 rounded-full blur-[100px] z-0"></div>
+
+                <div class="mockup-wrapper w-[300px] h-[640px] z-10">
+                    <img src="./路线页—景点详情.jpg" alt="景点详情" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%231f2937\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E景点详情.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+                
+                <div class="mockup-wrapper w-[300px] h-[640px] z-10 transform translate-y-12 relative">
+                    <!-- 徽章发光特效模拟 -->
+                    <div class="absolute top-[20%] right-[-20px] w-32 h-32 bg-yellow-400/30 rounded-full mix-blend-screen filter blur-2xl animate-pulse z-20 pointer-events-none"></div>
+                    <img src="./路线页-打卡徽章.jpg" alt="打卡徽章" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%231f2937\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E打卡徽章.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 视觉方案 4 - 商业闭环 -->
+        <div class="slide bg-white flex flex-row-reverse p-0 relative fade-up">
+             <div class="w-1/2 p-20 flex flex-col justify-center bg-bgGray z-10 border-l border-gray-200">
+                <div class="tag border border-brand text-brand mb-6 inline-block">05. 视觉推导 / UI 04</div>
+                <h2 class="text-5xl font-black mb-8 leading-tight text-gray-900">服务重构与商业变现<br><span class="text-3xl font-light text-gray-500 mt-2 block">行中服务 & 商城系统</span></h2>
+                
+                <div class="space-y-10 mt-4">
+                    <div class="relative pl-6 border-l-2 border-brand">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">服务触点：一站式行中保障</h3>
+                        <p class="text-gray-600 text-base leading-relaxed">
+                            【服务页】体现了服务设计(Service Design)中的“触点管理”。在户外陌生环境中，用户急需安全感。UI采用大色块、高对比度图标，将餐饮、向导、交通等刚需服务高度聚合，确保一键呼出，提升产品的“有用性”。
+                        </p>
+                    </div>
+                    <div class="relative pl-6 border-l-2 border-brand">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">商业价值：乡土物产的数字化上行</h3>
+                        <p class="text-gray-600 text-base leading-relaxed">
+                            【商城页】不仅是平台变现的关键，更是“授人以渔”助力乡村振兴的核心体现。UI严格遵循电商高转化设计原则：精美的大图强化商品吸引力，明确的视觉层级和高亮的CTA按钮（Call To Action），最大限度缩短用户消费路径，完成商业闭环。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w-1/2 bg-[#f0f2f5] flex items-center justify-center gap-12 p-12 relative">
+                <div class="mockup-wrapper light w-[300px] h-[640px] z-10 transform -rotate-1 hover:rotate-0 transition-transform duration-300 shadow-xl">
+                    <img src="./服务页.png" alt="服务页" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E服务页.png%3C/text%3E%3C/svg%3E'">
+                </div>
+                
+                <div class="mockup-wrapper light w-[300px] h-[640px] z-10 transform rotate-1 translate-y-8 hover:rotate-0 transition-transform duration-300 shadow-xl">
+                    <img src="./服务页-商城.jpg" alt="商城页" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E商城.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 结尾总结 -->
+        <div class="slide dark-mode flex-col justify-center items-center text-center relative overflow-hidden fade-up" style="min-height: 600px;">
+             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0b0d] via-brand/10 to-[#0a0b0d] z-0"></div>
+            <div class="content-z max-w-3xl px-8">
+                <div class="w-16 h-1 bg-brand mx-auto mb-10"></div>
+                <h2 class="text-5xl font-black mb-8 leading-tight">设计不仅是视觉的粉饰<br><span class="text-gray-400 font-normal">更是连接乡土文化与现代体验的桥梁</span></h2>
+                <div class="p-8 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm mb-12">
+                     <p class="text-gray-300 text-lg leading-relaxed italic">
+                        “站在这个时间节点回望，这不仅是一次商业设计的推演，更是一场寻找内心的历程。终点亦是起点，我将保持热忱，继续前行！”
+                    </p>
+                </div>
+                <div class="text-sm text-gray-500 tracking-[0.3em] uppercase font-bold">Thanks for Watching</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 优化交叉观察器动画，带有阈值和取消观察机制
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15 // 当卡片露出 15% 时触发动画
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // 动画执行一次后取消观察，避免上下滚动重复触发闪烁
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // 绑定所有带 fade-up class 的元素
+        document.querySelectorAll('.fade-up').forEach((el, index) => {
+            // 第一张幻灯片加载即显示，不需要等待滚动
+            if(index === 0) {
+                setTimeout(() => { el.classList.add('visible'); }, 100);
+            } else {
+                observer.observe(el);
+            }
+        });
+    </script>
+</body>
+</html>
