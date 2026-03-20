@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品集 - 乡野寻踪 | 湿地村落文旅体验设计</title>
+    <!-- 引入 Tailwind CSS 进行快速排版 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts: Noto Sans SC 提供现代感的中文字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans SC"', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#0a0b0d',
+                        darker: '#050505',
+                        panel: '#15171a',
+                        brand: '#2d6a4f', /* 湿地黛绿 */
+                        brandLight: '#40916c',
+                        accent: '#e07a5f', /* 乡土赤陶 */
+                        bgGray: '#f4f5f7',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #e5e7eb;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
+            /* 自定义滚动条 */
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+        .slide-container {
+            width: 100%;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 80px; /* 卡片之间的间距更大 */
+            align-items: center;
+        }
+
+        /* 宽屏比例的幻灯片，给予充分的呼吸感 */
+        .slide {
+            width: 100%;
+            max-width: 1500px; /* 增大最大宽度 */
+            min-height: 800px; /* 保证最小高度，避免挤压 */
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+
+        .slide.dark-mode {
+            background: #0a0b0d;
+            color: #ffffff;
+        }
+
+        /* 背景装饰与光影 */
+        .decor-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        
+        .grid-bg {
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .content-z {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 占位图样式优化 */
+        .img-placeholder {
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            font-size: 0.875rem;
+            object-fit: contain; 
+        }
+
+        /* 手机壳阴影质感 */
+        .mockup-wrapper {
+            box-shadow: 
+                0 30px 60px -10px rgba(0,0,0,0.3),
+                inset 0 0 0 1px rgba(255,255,255,0.2);
+            border: 10px solid #1a1a1a;
+            border-radius: 44px;
+            background: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .mockup-wrapper.light {
+            border-color: #ffffff;
+            box-shadow: 
+                0 30px 60px -10px rgba(0,0,0,0.1),
+                inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        /* 进场动画 */
+        .fade-up { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .tag {
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-container">
+
+        <!-- Slide 1: 封面 (大视觉留白) -->
+        <div class="slide dark-mode flex-col justify-center items-center text-center relative fade-up">
+            <div class="decor-glow bg-brand w-[800px] h-[800px] top-[-300px] right-[-200px]"></div>
+            <div class="decor-glow bg-blue-900 w-[600px] h-[600px] bottom-[-200px] left-[-200px]"></div>
+            <div class="grid-bg"></div>
+            
+            <div class="content-z max-w-4xl px-8">
+                <div class="text-brandLight tracking-[0.2em] text-sm mb-8 font-bold uppercase">UI/UX Case Study & Service Design</div>
+                <h1 class="text-7xl font-black mb-8 leading-tight tracking-tight">乡野寻踪<br><span class="text-4xl font-light text-gray-300 mt-4 block">湿地村落文旅体验服务设计研究</span></h1>
+                <p class="text-gray-400 text-xl mb-16 font-light leading-relaxed max-w-3xl mx-auto">
+                    基于乡土文化视域，以设计赋能乡村振兴。<br>重构文旅服务链路，打造“数字化+文化沉浸”的全新体验。
+                </p>
+                <div class="flex gap-8 justify-center">
+                    <div class="flex flex-col items-center">
+                        <span class="text-white text-lg font-bold">邹之晨</span>
+                        <span class="text-gray-500 text-sm mt-1">Designer</span>
+                    </div>
+                    <div class="w-px h-10 bg-gray-800"></div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-white text-lg font-bold">2026.03</span>
+                        <span class="text-gray-500 text-sm mt-1">Date</span>
+                    </div>
+                    <div class="w-px h-10 bg-gray-800"></div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-white text-lg font-bold">Mobile App</span>
+                        <span class="text-gray-500 text-sm mt-1">Platform</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 阿里五导家 1/2 - 诉求洞察 -->
+        <div class="slide bg-white flex relative fade-up">
+            <div class="w-1/3 p-20 bg-bgGray flex flex-col justify-between border-r border-gray-200">
+                <div>
+                    <div class="tag border border-brand text-brand mb-6 inline-block">Step 01-02</div>
+                    <h2 class="text-4xl font-black mb-4 text-gray-900 leading-tight">挖掘业务土壤<br>洞察用户心声</h2>
+                    <p class="text-gray-500 text-base leading-relaxed mt-6">
+                        设计的起点并非画布，而是对商业环境与目标用户的深刻理解。基于“阿里五导家”前两步，我们明确了设计的基座。
+                    </p>
+                </div>
+                <!-- 引用论文 -->
+                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm mt-12 relative">
+                    <div class="absolute -top-3 -left-3 text-4xl text-gray-200">❝</div>
+                    <p class="text-sm text-gray-500 leading-relaxed italic z-10 relative">
+                        “在全面推进乡村振兴与文旅融合的背景下... 信阳民歌、三壁吹打乐等极具地域特色的乡土文化，亟待通过服务设计完成数字化转译。”
+                    </p>
+                    <p class="text-xs text-gray-400 mt-4 text-right">— 摘自《乡土文化视域下湿地村落文旅体验服务设计研究》</p>
+                </div>
+            </div>
+
+            <div class="w-2/3 p-20 flex flex-col gap-12 justify-center">
+                <!-- 业务诉求 -->
+                <div class="flex gap-8">
+                    <div class="w-16 h-16 rounded-full bg-brand/10 flex items-center justify-center text-brand font-bold text-2xl shrink-0">1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-900">明确业务诉求 (Business Needs)</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">当前湿地村落旅游面临“文化感知弱、停留时间短、二次消费低”的痛点。业务的核心诉求在于：通过打造线上平台，<strong class="text-brand">盘活闲置的乡土文化资源</strong>，延长游客的游玩生命周期，最终构建“引流-体验-消费”的文旅商业闭环。</p>
+                        <div class="flex gap-4">
+                            <span class="px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-medium">文化传承转译</span>
+                            <span class="px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-medium">延长LTV(生命周期价值)</span>
+                            <span class="px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-medium">乡村经济上行</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-full h-px bg-gray-100"></div>
+
+                <!-- 用户诉求 -->
+                <div class="flex gap-8">
+                    <div class="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold text-2xl shrink-0">2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-900">洞见用户诉求 (User Needs)</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">通过用户旅程地图(User Journey Map)分析，年轻一代的新型游客厌倦了“同质化”的打卡，他们渴望获得有深度、有掌控感的体验。但面对碎片化信息，他们存在规划困难的痛点。</p>
+                        <div class="grid grid-cols-3 gap-6 mt-4">
+                            <div class="bg-red-50 p-4 rounded-xl">
+                                <div class="text-red-500 font-bold mb-2">痛点 Pain</div>
+                                <div class="text-sm text-gray-600">攻略繁杂零碎，缺乏行中场景的有效指引与文化解说。</div>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-xl">
+                                <div class="text-blue-500 font-bold mb-2">爽点 Gain</div>
+                                <div class="text-sm text-gray-600">能够自由定制路线，掌控行程，并在探索中获得成就感。</div>
+                            </div>
+                            <div class="bg-orange-50 p-4 rounded-xl">
+                                <div class="text-orange-500 font-bold mb-2">痒点 Itch</div>
+                                <div class="text-sm text-gray-600">与乡土非遗（如民歌/吹打乐）产生沉浸式的情感共鸣。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 阿里五导家 2/2 - 目标推导 -->
+        <div class="slide dark-mode flex flex-row-reverse relative fade-up">
+            <div class="w-1/3 p-20 bg-panel flex flex-col justify-between border-l border-gray-800 z-10">
+                <div>
+                    <div class="tag border border-brandLight text-brandLight mb-6 inline-block">Step 03-04</div>
+                    <h2 class="text-4xl font-black mb-4 text-white leading-tight">指标拆解<br>锁定设计发力点</h2>
+                    <p class="text-gray-400 text-base leading-relaxed mt-6">
+                        将抽象的诉求，转化为可衡量的数据指标，并推导出具体的UI/UX交互策略。
+                    </p>
+                </div>
+            </div>
+
+            <div class="w-2/3 p-20 flex flex-col gap-16 justify-center relative">
+                 <div class="decor-glow bg-brand w-[400px] h-[400px] top-[10%] left-[20%] opacity-20"></div>
+                 
+                <!-- 业务目标 -->
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-bold mb-6 text-white flex items-center gap-4">
+                        <span class="text-brandLight text-3xl">03.</span> 定义业务目标 (Business Goals)
+                    </h3>
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="border border-gray-800 bg-darker p-6 rounded-2xl">
+                            <div class="text-3xl font-black text-white mb-2">转化率提升</div>
+                            <p class="text-sm text-gray-500">通过整合“游-购-娱”，提升商城农特产品与线下服务的预约转化率。</p>
+                        </div>
+                        <div class="border border-gray-800 bg-darker p-6 rounded-2xl">
+                            <div class="text-3xl font-black text-white mb-2">UGC & 裂变</div>
+                            <p class="text-sm text-gray-500">引入游戏化机制，提升打卡完成率与社交媒体分享率（K因子提升）。</p>
+                        </div>
+                        <div class="border border-gray-800 bg-darker p-6 rounded-2xl">
+                            <div class="text-3xl font-black text-white mb-2">用户粘性 MAU</div>
+                            <p class="text-sm text-gray-500">打造个人文化资产（徽章、足迹），增加用户离开村落后的平台留存。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 设计目标 -->
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-bold mb-6 text-white flex items-center gap-4">
+                        <span class="text-brandLight text-3xl">04.</span> 拆解设计目标 (Design Goals)
+                    </h3>
+                    <div class="bg-gradient-to-br from-gray-900 to-black p-8 rounded-3xl border border-gray-800">
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand/20 text-brandLight flex items-center justify-center font-bold mt-1">A</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-gray-200 mb-1">降噪与导览：降低认知负荷，强化LBS场景化</h4>
+                                    <p class="text-sm text-gray-500">应对策略：采用卡片式信息架构，弱化复杂层级；结合LBS地理位置，提供符合“行中”场景的情境化导航与路线规划。</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand/20 text-brandLight flex items-center justify-center font-bold mt-1">B</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-gray-200 mb-1">情感化映射：将乡土文化“视觉符号化”</h4>
+                                    <p class="text-sm text-gray-500">应对策略：提取信阳湿地的色彩与纹理，运用到UI的视觉表现层；利用多媒体（音频、手绘）增强文化沉浸感。</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand/20 text-brandLight flex items-center justify-center font-bold mt-1">C</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-gray-200 mb-1">游戏化闭环：运用八角行为模型 (Octalysis)</h4>
+                                    <p class="text-sm text-gray-500">应对策略：设计“打卡-徽章-积分-兑换”闭环，利用用户的收集癖和稀缺性心理，促进行为发生。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Design System 设计规范 -->
+        <div class="slide bg-white flex flex-col p-20 relative fade-up">
+            <div class="text-center mb-16">
+                <div class="tag border border-gray-300 text-gray-500 mb-4 inline-block">Design System</div>
+                <h2 class="text-4xl font-black text-gray-900">视觉基因提取</h2>
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">以“乡土、自然、呼吸感”为核心基调，提取湿地色彩与现代排版规范，确保全链路体验的视觉一致性。</p>
+            </div>
+
+            <div class="flex gap-16 h-full">
+                <!-- Color Palette -->
+                <div class="w-1/2 flex flex-col gap-6">
+                    <h3 class="text-xl font-bold text-gray-800 border-l-4 border-brand pl-3">色彩体系 Color Palette</h3>
+                    <div class="grid grid-cols-2 gap-4 flex-1">
+                        <div class="bg-[#2d6a4f] rounded-2xl p-6 flex flex-col justify-end text-white shadow-lg">
+                            <div class="text-sm opacity-80 mb-1">Primary Color</div>
+                            <div class="font-bold text-xl">湿地黛绿</div>
+                            <div class="font-mono text-sm opacity-70">#2D6A4F</div>
+                        </div>
+                        <div class="bg-[#e07a5f] rounded-2xl p-6 flex flex-col justify-end text-white shadow-lg">
+                            <div class="text-sm opacity-80 mb-1">Accent Color</div>
+                            <div class="font-bold text-xl">乡土赤陶</div>
+                            <div class="font-mono text-sm opacity-70">#E07A5F</div>
+                        </div>
+                        <div class="bg-[#f8f9fa] rounded-2xl p-6 flex flex-col justify-end text-gray-800 border border-gray-200">
+                            <div class="text-sm text-gray-500 mb-1">Background</div>
+                            <div class="font-bold text-xl">芦苇白</div>
+                            <div class="font-mono text-sm text-gray-400">#F8F9FA</div>
+                        </div>
+                        <div class="bg-[#1a1a1a] rounded-2xl p-6 flex flex-col justify-end text-white">
+                            <div class="text-sm opacity-80 mb-1">Text Dark</div>
+                            <div class="font-bold text-xl">青石黑</div>
+                            <div class="font-mono text-sm opacity-70">#1A1A1A</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typography & Components -->
+                <div class="w-1/2 flex flex-col gap-6">
+                    <h3 class="text-xl font-bold text-gray-800 border-l-4 border-brand pl-3">排版与网格 Typography & Grid</h3>
+                    <div class="bg-bgGray rounded-3xl p-10 flex-1 border border-gray-200 flex flex-col justify-center">
+                        <div class="mb-8">
+                            <div class="text-sm text-gray-500 mb-2">Display Font - Noto Sans SC</div>
+                            <div class="text-5xl font-black text-gray-900 mb-2">湿地寻踪</div>
+                            <div class="text-2xl font-bold text-gray-800 mb-2">H1 - 标题层级分明</div>
+                            <div class="text-base text-gray-600 leading-relaxed">Body Text - 正文保持良好的行高与字间距，遵循格式塔原理中的“接近性”，通过留白划分信息区块，降低屏幕阅读的视觉疲劳。</div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <div class="h-12 w-32 bg-brand rounded-full flex items-center justify-center text-white font-bold shadow-md">Primary CTA</div>
+                                <div class="text-sm text-gray-500">大圆角设计，传递亲和力</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="w-12 h-12 bg-white border border-gray-200 rounded-2xl shadow-sm flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-gray-300 rounded-full"></div>
+                                </div>
+                                <div class="w-12 h-12 bg-white border border-gray-200 rounded-2xl shadow-sm flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-gray-300 rounded-md"></div>
+                                </div>
+                                <div class="flex items-center ml-2 text-sm text-gray-500">微质感玻璃态图标</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 视觉方案 1 - 首页与个人中心 -->
+        <div class="slide dark-mode flex p-0 relative fade-up">
+            <!-- 左侧内容分析区 -->
+            <div class="w-1/2 p-20 flex flex-col justify-center bg-panel z-10 border-r border-gray-800">
+                <div class="tag border border-brandLight text-brandLight mb-6 inline-block">05. 视觉推导 / UI 01</div>
+                <h2 class="text-5xl font-black mb-8 leading-tight">流量分发与信息降噪<br><span class="text-3xl font-light text-gray-500 mt-2 block">首页 & 个人数据可视化</span></h2>
+                
+                <div class="space-y-10 mt-4">
+                    <div class="relative pl-6 border-l border-gray-700">
+                        <div class="absolute left-[-5px] top-1 w-2 h-2 rounded-full bg-brandLight"></div>
+                        <h3 class="text-xl font-bold text-white mb-3">信息架构：大视觉+轻入口</h3>
+                        <p class="text-gray-400 text-base leading-relaxed">
+                            【首页】基于<strong class="text-white">席克定律(Hick's Law)</strong>，为避免用户面对庞杂服务产生决策瘫痪，顶部采用沉浸式风光头图建立环境代入感。核心金刚区提炼最高频的4-5个操作入口，下方信息流采用卡片式封装，实现了信息的有效降噪。
+                        </p>
+                    </div>
+                    <div class="relative pl-6 border-l border-gray-700">
+                        <div class="absolute left-[-5px] top-1 w-2 h-2 rounded-full bg-brandLight"></div>
+                        <h3 class="text-xl font-bold text-white mb-3">情感化设计：归属感的建立</h3>
+                        <p class="text-gray-400 text-base leading-relaxed">
+                            【我的】页面弱化了传统的列表工具感。采用“去线留白”的视觉语言，将用户的足迹、徽章、积分进行高度可视化呈现。这符合<strong class="text-white">马斯洛需求层次</strong>中的“尊重与自我实现”，让数字资产成为情感连接的纽带。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧视觉展示区 -->
+            <div class="w-1/2 bg-darker flex items-center justify-center gap-10 p-12 relative overflow-hidden">
+                <div class="decor-glow bg-brandLight w-[500px] h-[500px] top-[10%] left-[20%] opacity-10"></div>
+                
+                <div class="mockup-wrapper w-[300px] h-[640px] transform -translate-y-8 hover:-translate-y-12 transition-transform duration-500">
+                    <img src="./首页.jpg" alt="首页设计" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E首页.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+                
+                <div class="mockup-wrapper w-[300px] h-[640px] transform translate-y-8 hover:translate-y-4 transition-transform duration-500">
+                    <img src="./我的.jpg" alt="我的页面设计" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E我的.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: 视觉方案 2 - 场景与导览 -->
+        <div class="slide bg-white flex flex-row-reverse p-0 relative fade-up">
+            <div class="w-1/2 p-20 flex flex-col justify-center bg-gray-50 z-10 border-l border-gray-200">
+                <div class="tag border border-accent text-accent mb-6 inline-block">05. 视觉推导 / UI 02</div>
+                <h2 class="text-5xl font-black mb-8 leading-tight text-gray-900">LBS场景化与空间感知<br><span class="text-3xl font-light text-gray-500 mt-2 block">定位导览 & 路线规划</span></h2>
+                
+                <div class="space-y-10 mt-4">
+                    <div class="relative pl-6 border-l-2 border-accent">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">物理世界与数字空间的映射</h3>
+                        <p class="text-gray-600 text-base leading-relaxed">
+                            【定位页】作为“行中”最高频的核心触点，抛弃了冷冰冰的标准化地图。采用定制化的手绘感风格与特色POI图钉，直观展示湿地村落的文化坐标，让空间感知更有温度。
+                        </p>
+                    </div>
+                    <div class="relative pl-6 border-l-2 border-accent">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">用户旅程：从被动跟随到主动构建</h3>
+                        <p class="text-gray-600 text-base leading-relaxed">
+                            【路线页】采用“双轨制”设计。为小白用户提供官方精选的线性路线（降低决策成本）；通过【定制路线】功能，赋予深度游用户极大的掌控感。拖拽交互简单直观，满足了个性化探索的“爽点”。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w-1/2 bg-gray-100 flex items-center justify-center gap-6 p-12 relative overflow-hidden">
+                <!-- 装饰背景 -->
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50"></div>
+                <div class="absolute right-0 bottom-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl"></div>
+
+                <div class="mockup-wrapper light w-[260px] h-[560px] transform -rotate-2 z-10 hover:rotate-0 transition-transform duration-300">
+                    <img src="./定位页.jpg" alt="定位页" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'260\' height=\'560\'%3E%3Crect width=\'260\' height=\'560\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E定位页.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+                
+                <div class="mockup-wrapper light w-[260px] h-[560px] transform translate-y-12 z-20 hover:-translate-y-2 transition-transform duration-300">
+                    <img src="./路线页.jpg" alt="路线页" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'260\' height=\'560\'%3E%3Crect width=\'260\' height=\'560\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E路线页.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+
+                <div class="mockup-wrapper light w-[260px] h-[560px] transform rotate-2 z-10 hover:rotate-0 transition-transform duration-300">
+                    <img src="./路线页—定制路线.jpg" alt="定制路线页" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'260\' height=\'560\'%3E%3Crect width=\'260\' height=\'560\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E定制路线.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 视觉方案 3 - 情感与游戏化 -->
+        <div class="slide dark-mode flex p-0 relative fade-up">
+            <div class="w-1/2 p-20 flex flex-col justify-center bg-[#0d1015] z-10 border-r border-gray-800">
+                <div class="tag border border-yellow-500 text-yellow-500 mb-6 inline-block">05. 视觉推导 / UI 03</div>
+                <h2 class="text-5xl font-black mb-8 leading-tight">情感引擎与游戏化闭环<br><span class="text-3xl font-light text-gray-500 mt-2 block">景点详情 & 打卡徽章</span></h2>
+                
+                <div class="space-y-10 mt-4">
+                    <div class="relative pl-6 border-l border-yellow-700">
+                        <h3 class="text-xl font-bold text-white mb-3">多维度的乡土文化叙事</h3>
+                        <p class="text-gray-400 text-base leading-relaxed">
+                            【景点详情】不再是生硬的文字堆砌。结合论文中对<strong class="text-yellow-500">“信阳民歌、三壁吹打乐”</strong>的研究，UI设计融入了音频播放控件与全景图，通过视听多通道刺激，将抽象的非遗文化生动转译。
+                        </p>
+                    </div>
+                    <div class="relative pl-6 border-l border-yellow-700">
+                        <h3 class="text-xl font-bold text-white mb-3">Fogg行为模型与上瘾机制</h3>
+                        <p class="text-gray-400 text-base leading-relaxed">
+                            【打卡徽章】是增长黑客(Growth Hacker)策略的核心体现。基于<strong class="text-white">B=MAP行为模型</strong>：提供精美徽章激发收集动机(Motivation)，LBS自动识别降低打卡门槛(Ability)，到达景点触发推送(Prompt)。拟物化的3D徽章设计赋予数字成就实体质感，极大地促进了用户的UGC分享。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w-1/2 bg-[#050608] flex items-center justify-center gap-12 p-12 relative">
+                 <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-yellow-500/10 rounded-full blur-[100px] z-0"></div>
+
+                <div class="mockup-wrapper w-[300px] h-[640px] z-10">
+                    <img src="./路线页—景点详情.jpg" alt="景点详情" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%231f2937\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E景点详情.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+                
+                <div class="mockup-wrapper w-[300px] h-[640px] z-10 transform translate-y-12 relative">
+                    <!-- 徽章发光特效模拟 -->
+                    <div class="absolute top-[20%] right-[-20px] w-32 h-32 bg-yellow-400/30 rounded-full mix-blend-screen filter blur-2xl animate-pulse z-20 pointer-events-none"></div>
+                    <img src="./路线页-打卡徽章.jpg" alt="打卡徽章" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%231f2937\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E打卡徽章.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 视觉方案 4 - 商业闭环 -->
+        <div class="slide bg-white flex flex-row-reverse p-0 relative fade-up">
+             <div class="w-1/2 p-20 flex flex-col justify-center bg-bgGray z-10 border-l border-gray-200">
+                <div class="tag border border-brand text-brand mb-6 inline-block">05. 视觉推导 / UI 04</div>
+                <h2 class="text-5xl font-black mb-8 leading-tight text-gray-900">服务重构与商业变现<br><span class="text-3xl font-light text-gray-500 mt-2 block">行中服务 & 商城系统</span></h2>
+                
+                <div class="space-y-10 mt-4">
+                    <div class="relative pl-6 border-l-2 border-brand">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">服务触点：一站式行中保障</h3>
+                        <p class="text-gray-600 text-base leading-relaxed">
+                            【服务页】体现了服务设计(Service Design)中的“触点管理”。在户外陌生环境中，用户急需安全感。UI采用大色块、高对比度图标，将餐饮、向导、交通等刚需服务高度聚合，确保一键呼出，提升产品的“有用性”。
+                        </p>
+                    </div>
+                    <div class="relative pl-6 border-l-2 border-brand">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">商业价值：乡土物产的数字化上行</h3>
+                        <p class="text-gray-600 text-base leading-relaxed">
+                            【商城页】不仅是平台变现的关键，更是“授人以渔”助力乡村振兴的核心体现。UI严格遵循电商高转化设计原则：精美的大图强化商品吸引力，明确的视觉层级和高亮的CTA按钮（Call To Action），最大限度缩短用户消费路径，完成商业闭环。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w-1/2 bg-[#f0f2f5] flex items-center justify-center gap-12 p-12 relative">
+                <div class="mockup-wrapper light w-[300px] h-[640px] z-10 transform -rotate-1 hover:rotate-0 transition-transform duration-300 shadow-xl">
+                    <img src="./服务页.png" alt="服务页" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E服务页.png%3C/text%3E%3C/svg%3E'">
+                </div>
+                
+                <div class="mockup-wrapper light w-[300px] h-[640px] z-10 transform rotate-1 translate-y-8 hover:rotate-0 transition-transform duration-300 shadow-xl">
+                    <img src="./服务页-商城.jpg" alt="商城页" class="w-full h-full object-cover img-placeholder" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'640\'%3E%3Crect width=\'300\' height=\'640\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E商城.jpg%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 结尾总结 -->
+        <div class="slide dark-mode flex-col justify-center items-center text-center relative overflow-hidden fade-up" style="min-height: 600px;">
+             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0b0d] via-brand/10 to-[#0a0b0d] z-0"></div>
+            <div class="content-z max-w-3xl px-8">
+                <div class="w-16 h-1 bg-brand mx-auto mb-10"></div>
+                <h2 class="text-5xl font-black mb-8 leading-tight">设计不仅是视觉的粉饰<br><span class="text-gray-400 font-normal">更是连接乡土文化与现代体验的桥梁</span></h2>
+                <div class="p-8 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm mb-12">
+                     <p class="text-gray-300 text-lg leading-relaxed italic">
+                        “站在这个时间节点回望，这不仅是一次商业设计的推演，更是一场寻找内心的历程。终点亦是起点，我将保持热忱，继续前行！”
+                    </p>
+                </div>
+                <div class="text-sm text-gray-500 tracking-[0.3em] uppercase font-bold">Thanks for Watching</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 优化交叉观察器动画，带有阈值和取消观察机制
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15 // 当卡片露出 15% 时触发动画
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // 动画执行一次后取消观察，避免上下滚动重复触发闪烁
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // 绑定所有带 fade-up class 的元素
+        document.querySelectorAll('.fade-up').forEach((el, index) => {
+            // 第一张幻灯片加载即显示，不需要等待滚动
+            if(index === 0) {
+                setTimeout(() => { el.classList.add('visible'); }, 100);
+            } else {
+                observer.observe(el);
+            }
+        });
+    </script>
+</body>
+</html>
