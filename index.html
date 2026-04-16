@@ -3,897 +3,520 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>云游郭家河 - 乡村文旅智慧平台体验设计复盘</title>
-    <!-- Tailwind CSS -->
+    <title>集互通 - B端全链路体验设计与底层逻辑推导</title>
+    <!-- 引入 React 和 ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- ECharts -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-    <!-- AOS Animation -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-
+    <!-- 引入 Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            light: '#F0F9F1', // 背景浅绿
-                            DEFAULT: '#4CAF50', // 品牌绿
-                            dark: '#2E7D32', // 深绿
-                            accent: '#FFCA28', // 暖阳黄
-                        },
-                        text: {
-                            main: '#333333',
-                            sub: '#666666',
-                            light: '#999999'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Noto Sans SC"', 'sans-serif'],
+                        brand: { 50: '#fff3ec', 100: '#ffe4d3', 200: '#ffc6a5', 300: '#ffa16d', 400: '#ff7332', 500: '#ff540a', 600: '#f03e00', 700: '#c72e02', 800: '#9e250a', 900: '#7e220c' },
+                        primary: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 900: '#1e3a8a' }, // 辅助蓝，用于对比
+                        surface: '#F8FAFC',
+                        dark: '#0F172A',
+                        darker: '#020617'
                     },
                     boxShadow: {
-                        'glass': '0 8px 32px 0 rgba(76, 175, 80, 0.1)',
-                        'phone': '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 12px #ffffff',
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                        'glow': '0 0 20px rgba(255, 84, 10, 0.3)',
                     }
                 }
             }
         }
     </script>
     <style>
-        body {
-            background-color: #FAFAFA;
-            color: #333;
-            overflow-x: hidden;
-        }
-        .slide-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-        }
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: #2E7D32;
-            position: relative;
-            display: inline-block;
-            margin-bottom: 2rem;
-            letter-spacing: 0.05em;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 40px;
-            height: 4px;
-            background: #FFCA28;
-            border-radius: 2px;
-        }
-        .section-subtitle {
-            font-size: 1rem;
-            color: #4CAF50;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-        .bg-pattern {
-            background-image: radial-gradient(#4CAF50 0.5px, transparent 0.5px), radial-gradient(#4CAF50 0.5px, #F0F9F1 0.5px);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
-            background-color: #F0F9F1;
-            opacity: 0.3;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #F8FAFC; color: #334155; }
         
-        /* 手机模型样式 */
-        .mockup-wrapper {
-            position: relative;
-            width: 320px;
-            height: 690px;
-            background: #fff;
-            border-radius: 40px;
-            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.15), 0 0 0 10px #f0f0f0;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-        .mockup-notch {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 25px;
-            background: #f0f0f0;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-            z-index: 10;
-        }
-        .mockup-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #E8F5E9;
-            font-size: 0.875rem;
-            color: #666;
-            text-align: center;
-            padding: 1rem;
-        }
-        
-        .number-stat {
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.8);
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* 动画基础 */
+        .fade-in-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+
+        /* 高级文字高亮 */
+        .highlight-b { position: relative; z-index: 1; font-weight: 700; color: #0F172A;}
+        .highlight-b::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 40%; background-color: rgba(255, 84, 10, 0.2); z-index: -1; transition: height 0.3s; }
+        .highlight-b:hover::after { height: 100%; }
+
+        /* --- 双钻模型专属 CSS --- */
+        .diamond-container { display: flex; align-items: center; justify-content: center; position: relative; width: 100%; height: 300px; }
+        .diamond-line { position: absolute; top: 50%; left: 10%; right: 10%; height: 2px; background: linear-gradient(90deg, transparent, #cbd5e1 20%, #cbd5e1 80%, transparent); z-index: 0; }
+        .diamond { 
+            width: 240px; height: 240px; 
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,250,252,0.4));
+            border: 1px solid rgba(255,84,10,0.1);
+            transform: rotate(45deg); 
+            display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 1;
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.5), 0 10px 30px rgba(0,0,0,0.02);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(76, 175, 80, 0.05);
         }
+        .diamond-center-node {
+            width: 120px; height: 120px;
+            background: linear-gradient(135deg, #ff7332, #ff540a);
+            transform: rotate(45deg);
+            display: flex; align-items: center; justify-content: center;
+            position: absolute; z-index: 10;
+            box-shadow: 0 10px 25px rgba(255,84,10,0.4);
+            left: 50%; top: 50%; margin-left: -60px; margin-top: -60px;
+        }
+        .diamond-content { transform: rotate(-45deg); text-align: center; }
         
-        /* 链条式推导时间轴样式 */
-        .timeline-line {
-            position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(to bottom, #4CAF50, #FFCA28);
-            border-radius: 2px;
-            opacity: 0.3;
-        }
-        @media (min-width: 768px) {
-            .timeline-line {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
-        .timeline-dot {
-            position: absolute;
-            left: 22px;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #fff;
-            border: 6px solid #4CAF50;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            box-shadow: 0 0 0 8px rgba(76, 175, 80, 0.1);
-        }
-        @media (min-width: 768px) {
-            .timeline-dot {
-                left: 50%;
-            }
-        }
+        .connector-dot { width: 12px; height: 12px; background: #3b82f6; transform: rotate(45deg); position: absolute; z-index: 5; }
+        
+        /* 深度分析卡片悬浮效果 */
+        .insight-card { transition: all 0.3s ease; border: 1px solid #e2e8f0; }
+        .insight-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.08); border-color: #ff540a; }
     </style>
 </head>
-<body class="antialiased">
+<body>
+    <div id="root"></div>
 
-    <!-- 01 Cover -->
-    <header class="relative min-h-screen flex items-center justify-center overflow-hidden bg-brand-light">
-        <div class="absolute inset-0 bg-pattern"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#FAFAFA]"></div>
-        
-        <div class="slide-container px-6 z-10 w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div data-aos="fade-right" data-aos-duration="1000">
-                <div class="inline-block px-4 py-2 rounded-full bg-brand/10 text-brand font-bold text-sm mb-6">
-                    UI/UX Case Study • 2026
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // 滚动监听 Hook
+        const useScrollAnimation = () => {
+            useEffect(() => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+                return () => observer.disconnect();
+            }, []);
+        };
+
+        // 导航进度条
+        const ProgressNav = () => {
+            const [progress, setProgress] = useState(0);
+            useEffect(() => {
+                const handleScroll = () => {
+                    const scrollPx = document.documentElement.scrollTop;
+                    const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    setProgress(`${scrollPx / winHeightPx * 100}%`);
+                }
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+            return (
+                <div className="fixed top-0 left-0 w-full h-1 z-50 bg-gray-100">
+                    <div className="h-full bg-brand-500 transition-all duration-150 ease-out" style={{ width: progress }}></div>
                 </div>
-                <h1 class="text-6xl md:text-8xl font-black text-text-main mb-6 leading-tight tracking-tight">
-                    心栖梦归处<br>
-                    <span class="text-brand">自在郭家河</span>
-                </h1>
-                <p class="text-xl text-text-sub mb-8 leading-relaxed max-w-lg">
-                    基于真实需求调研的乡村文旅智慧平台体验升级。探寻大别山深处的红色记忆与绿色生态，打造全链路沉浸式游览新体验。
-                </p>
-                <div class="flex gap-4">
-                    <div class="text-sm">
-                        <div class="text-text-light font-bold mb-1">设计领域</div>
-                        <div class="font-medium text-text-main">用户研究 / 交互设计 / UI设计</div>
-                    </div>
-                    <div class="w-px h-10 bg-gray-300 mx-4"></div>
-                    <div class="text-sm">
-                        <div class="text-text-light font-bold mb-1">项目愿景</div>
-                        <div class="font-medium text-text-main">文旅数字化体验赋能</div>
-                    </div>
-                </div>
+            );
+        };
+
+        // 章节标题组件
+        const SectionHeader = ({ title, subtitle, desc }) => (
+            <div className="mb-16 fade-in-up">
+                <p className="text-brand-500 font-bold tracking-widest text-sm mb-2 uppercase">{subtitle}</p>
+                <h2 className="text-4xl md:text-5xl font-bold text-dark mb-4">{title}</h2>
+                {desc && <p className="text-gray-500 text-lg max-w-3xl leading-relaxed">{desc}</p>}
             </div>
-            
-            <div class="relative" data-aos="fade-left" data-aos-duration="1200" data-aos-delay="200">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand/20 rounded-full blur-[100px]"></div>
-                <!-- Cover Mockup -->
-                <div class="mockup-wrapper transform rotate-[-5deg] hover:rotate-0 transition-transform duration-700 relative z-10">
-                    <div class="mockup-notch"></div>
-                    <div class="mockup-content">
+        );
+
+        const App = () => {
+            useScrollAnimation();
+
+            return (
+                <div className="bg-surface overflow-hidden">
+                    <ProgressNav />
+
+                    {/* ==================== 01 HERO 封面 ==================== */}
+                    <section className="relative min-h-screen flex items-center pt-20 pb-16 px-6 lg:px-24">
+                        <div className="absolute top-0 right-0 w-[50vw] h-screen bg-gradient-to-bl from-brand-50 to-transparent -z-10"></div>
+                        <div className="absolute bottom-20 left-10 w-64 h-64 bg-blue-50 rounded-full blur-3xl -z-10"></div>
+
+                        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-12 items-center">
+                            <div className="lg:col-span-5 fade-in-up z-10">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm mb-6">
+                                    <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                                    <span className="text-xs font-semibold text-gray-600">Enterprise Resource Planning UI/UX</span>
+                                </div>
+                                <h1 className="text-6xl lg:text-7xl font-bold text-dark leading-[1.1] mb-6">
+                                    集互通 2.0 <br/>
+                                    <span className="text-brand-500">重塑B端能效</span>
+                                </h1>
+                                <p className="text-gray-500 text-lg leading-relaxed mb-10">
+                                    摒弃传统B端系统堆砌功能的思维，以“角色场景、认知降负、链路闭环”为核心策略，将割裂的电商ERP重构为高效的智能工作台，为决策层赋能，为执行层减负。
+                                </p>
+                                
+                                <div className="grid grid-cols-3 gap-6 pt-6 border-t border-gray-200">
+                                    <div>
+                                        <p className="text-sm text-gray-400 mb-1">设计侧重点</p>
+                                        <p className="font-bold text-dark">效率与降噪</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-400 mb-1">覆盖终端</p>
+                                        <p className="font-bold text-dark">Web 端</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-400 mb-1">核心角色</p>
+                                        <p className="font-bold text-dark">决策者/执行者</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="lg:col-span-7 relative fade-in-up delay-200">
+                                {/* 模拟多层叠放的视觉效果 */}
+                                <div className="relative w-full aspect-[4/3] perspective-1000">
+                                    <img src="1.jpg" alt="首页" className="absolute top-0 right-0 w-[80%] rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/50 z-10 transition-transform duration-500 hover:-translate-y-2 hover:rotate-1" />
+                                    <img src="03-当前会话.png" alt="客服" className="absolute bottom-[5%] left-0 w-[60%] rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/50 z-20 transition-transform duration-500 hover:-translate-y-2 hover:-rotate-1" />
+                                    <div className="absolute top-[20%] left-[-5%] bg-white/90 backdrop-blur p-4 rounded-xl shadow-xl z-30 border border-gray-100 flex items-center gap-4">
+                                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-500"><i className="ph-fill ph-trend-up text-xl"></i></div>
+                                        <div>
+                                            <p className="text-xs text-gray-400">操作耗时降低</p>
+                                            <p className="text-xl font-bold text-dark">40%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ==================== 02 双钻设计模型 (全新重构) ==================== */}
+                    <section className="py-24 px-6 lg:px-24 bg-white relative">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="text-center mb-16 fade-in-up">
+                                <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">全链路推导：基于“阿里五导家”的设计策略</h2>
+                                <p className="text-gray-500">从发现业务痛点到最终体验落地，确保每一个像素的改变都有其业务依据</p>
+                            </div>
+
+                            {/* 纯代码绘制的双钻模型 */}
+                            <div className="w-full overflow-x-auto pb-10 fade-in-up delay-100">
+                                <div className="min-w-[900px]">
+                                    
+                                    {/* 顶部标签 */}
+                                    <div className="flex justify-between px-[15%] text-sm font-bold text-gray-500 mb-8 relative z-10">
+                                        <div className="flex gap-16">
+                                            <span>发现问题 <br/><span className="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-1 rounded mt-1 inline-block">发散</span></span>
+                                            <span>确定问题 <br/><span className="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-1 rounded mt-1 inline-block">聚焦</span></span>
+                                        </div>
+                                        <div className="flex gap-16">
+                                            <span>设计输出 <br/><span className="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-1 rounded mt-1 inline-block">发散</span></span>
+                                            <span>设计交付 <br/><span className="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-1 rounded mt-1 inline-block">聚焦</span></span>
+                                        </div>
+                                    </div>
+
+                                    {/* 核心图形区 */}
+                                    <div className="diamond-container mb-8">
+                                        <div className="diamond-line"></div>
+                                        
+                                        {/* 起点 */}
+                                        <div className="connector-dot" style={{ left: '10%' }}></div>
+                                        
+                                        {/* 左侧钻石：问题空间 */}
+                                        <div className="diamond absolute" style={{ left: '25%', marginLeft: '-120px' }}>
+                                            <div className="diamond-content">
+                                                <div className="text-primary-500 font-bold text-lg mb-1">解决方向</div>
+                                                <div className="text-xs text-gray-400 flex flex-col gap-1">
+                                                    <span>业务拆解 ——</span>
+                                                    <span>—— 用户调研</span>
+                                                </div>
                                             </div>
-                </div>
-            </div>
-        </div>
-    </header>
+                                        </div>
 
-    <!-- 02 Project Background (Business Goal) -->
-    <section class="py-24 bg-white relative">
-        <div class="slide-container px-6">
-            <div class="text-center mb-20" data-aos="fade-up">
-                <div class="section-subtitle">01 / Project Background</div>
-                <h2 class="section-title">业务溯源：数字赋能乡村文旅</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-14 h-14 rounded-2xl bg-brand/10 flex items-center justify-center mb-6 text-2xl">🌱</div>
-                    <h3 class="text-xl font-bold mb-4 text-brand-dark">资源丰富但触达受限</h3>
-                    <p class="text-text-sub leading-relaxed">郭家河乡拥有得天独厚的自然生态湿地与深厚的红廉文化底蕴，但由于缺乏统一的数字化阵地，优质资源难以精准触达潜在客群，信息呈现碎片化。</p>
-                </div>
-                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-14 h-14 rounded-2xl bg-brand/10 flex items-center justify-center mb-6 text-2xl">🗺️</div>
-                    <h3 class="text-xl font-bold mb-4 text-brand-dark">游览体验缺乏沉浸感</h3>
-                    <p class="text-text-sub leading-relaxed">传统的线下导览模式单一，游客在实地游览时缺乏深度的文化解说与互动，导致“走马观花”，难以形成深刻的情感连接与文化认同。</p>
-                </div>
-                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-14 h-14 rounded-2xl bg-brand/10 flex items-center justify-center mb-6 text-2xl">🔄</div>
-                    <h3 class="text-xl font-bold mb-4 text-brand-dark">游后转化与传播断层</h3>
-                    <p class="text-text-sub leading-relaxed">游客离场后缺乏有效的留存机制，特色农产品与文创商品难以实现长尾转化，游客自发分享分享的门槛较高，口碑裂变效应不足。</p>
-                </div>
-            </div>
-            
-            <div class="mt-16 p-8 rounded-3xl bg-brand text-white shadow-xl shadow-brand/30" data-aos="zoom-in" data-aos-delay="400">
-                <h3 class="text-2xl font-bold mb-4">设计破局点 (Design Goal)</h3>
-                <p class="text-lg opacity-90">打造一个集<strong>“游前种草规划+游中沉浸导览+游后回味转化”</strong>为一体的智慧文旅平台，以数字化手段激活乡村文旅产业，提升游客全链路体验，最终实现文化传播与经济收益的双赢。</p>
-            </div>
-        </div>
-    </section>
+                                        {/* 中心节点：确定目标 */}
+                                        <div className="diamond-center-node">
+                                            <div className="diamond-content text-white">
+                                                <div className="font-bold text-xl tracking-wider shadow-sm">确认目标</div>
+                                            </div>
+                                        </div>
 
-    <!-- 03 User Research (User Target) -->
-    <section class="py-24 bg-brand-light relative overflow-hidden">
-        <div class="slide-container px-6">
-            <div class="text-center mb-20" data-aos="fade-up">
-                <div class="section-subtitle">02 / User Insights</div>
-                <h2 class="section-title">调研解码：听见真实的声音</h2>
-                <p class="text-text-sub mt-4 max-w-2xl mx-auto">基于对135位有效用户的问卷数据深度剖析，我们精准描绘了郭家河文旅的核心客群画像，洞悉了他们在各个阶段的深层需求。</p>
-            </div>
+                                        {/* 右侧钻石：解决方案空间 */}
+                                        <div className="diamond absolute" style={{ right: '25%', marginRight: '-120px' }}>
+                                            <div className="diamond-content">
+                                                <div className="text-brand-500 font-bold text-lg mb-1">推动落地</div>
+                                                <div className="text-xs text-gray-400 flex flex-col gap-1">
+                                                    <span>交互设计 ——</span>
+                                                    <span>—— 视觉实现</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* 终点 */}
+                                        <div className="connector-dot" style={{ right: '10%' }}></div>
+                                    </div>
 
-            <!-- 数据图表区域一：用户画像 -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-                <div class="bg-white p-8 rounded-3xl shadow-sm" data-aos="fade-right">
-                    <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-brand rounded-full"></span>性别与客源地分布</h3>
-                    <div id="chart-gender-geo" style="width: 100%; height: 300px;"></div>
-                </div>
-                <div class="bg-white p-8 rounded-3xl shadow-sm" data-aos="fade-left">
-                    <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-brand rounded-full"></span>年龄与职业构成</h3>
-                    <div id="chart-age-job" style="width: 100%; height: 300px;"></div>
-                </div>
-            </div>
-            
-            <!-- 用户洞察结论 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-                <div class="border-l-4 border-brand pl-6" data-aos="fade-up">
-                    <h4 class="text-xl font-bold text-text-main mb-2">典型用户画像：轻中产及职场人群</h4>
-                    <p class="text-text-sub text-sm leading-relaxed">
-                        数据显示，核心客群集中在<strong>19-40岁（占比超80%）</strong>，职业以<strong>企业职员（42%）与企事业单位人员（28%）</strong>为主。女性受众（61%）显著高于男性。<br>
-                        <strong>结论：</strong>这部分人群具有一定的消费能力，渴望在周末或短假远离都市喧嚣，追求有品质的自然放松与深度的文化体验。
-                    </p>
-                </div>
-                <div class="border-l-4 border-brand-accent pl-6" data-aos="fade-up" data-aos-delay="100">
-                    <h4 class="text-xl font-bold text-text-main mb-2">出行特征：微度假与省内游</h4>
-                    <p class="text-text-sub text-sm leading-relaxed">
-                        客源地以<strong>河南省内（占比超50%）</strong>为主，停留时间大多选择<strong>1-3晚（56%）或当天往返（37%）</strong>。<br>
-                        <strong>结论：</strong>“周边微度假”是核心场景。平台需要提供高效的“一站式”短途游攻略与预订服务，降低出行决策成本。
-                    </p>
-                </div>
-            </div>
-
-            <!-- 数据图表区域二：偏好与触媒 -->
-            <div class="bg-white p-8 rounded-3xl shadow-sm mb-16" data-aos="fade-up">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-brand rounded-full"></span>信息获取渠道偏好</h3>
-                        <div id="chart-channel" style="width: 100%; height: 350px;"></div>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-brand rounded-full"></span>核心关注体验要素 (多选)</h3>
-                        <div id="chart-focus" style="width: 100%; height: 350px;"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center" data-aos="zoom-in">
-                <p class="text-xl text-brand-dark font-medium italic">“他们通过小红书种草，为了大别山的红色记忆与原生态的自然风光而来。”</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 04 Scenario Reconstruction (Key Action) - 五阶段链条式推导 -->
-    <section class="py-24 bg-[#1A1A1A] text-white relative overflow-hidden">
-        <!-- 装饰性背景 -->
-        <div class="absolute top-0 right-0 w-96 h-96 bg-brand/10 rounded-full blur-[120px]"></div>
-        <div class="absolute bottom-0 left-0 w-96 h-96 bg-brand-accent/10 rounded-full blur-[120px]"></div>
-
-        <div class="slide-container px-6 relative z-10">
-            <div class="text-center mb-24" data-aos="fade-up">
-                <div class="section-subtitle text-brand-accent">03 / Journey Map & Design Goals</div>
-                <h2 class="section-title !text-white after:bg-brand">体验链路推导：五步重塑文旅旅程</h2>
-                <p class="text-gray-400 mt-4 max-w-3xl mx-auto leading-relaxed">
-                    突破传统文旅工具的局限，我们将用户旅程细化为<strong class="text-white">5个核心阶段</strong>。基于数据洞察，将用户的“痛点/需求”通过链条式推导，转化为产品功能的“设计目标”，打造无缝衔接的沉浸式服务。
-                </p>
-            </div>
-
-            <div class="relative max-w-5xl mx-auto">
-                <!-- 贯穿的中心线 -->
-                <div class="timeline-line"></div>
-
-                <!-- Stage 1 -->
-                <div class="relative mb-24 md:mb-32">
-                    <div class="timeline-dot top-1/2 border-brand"></div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center pl-16 md:pl-0">
-                        <div class="md:text-right" data-aos="fade-right">
-                            <div class="text-brand text-6xl font-black opacity-20 mb-[-20px] -ml-4 md:-mr-4">01</div>
-                            <h3 class="text-2xl font-bold mb-2">规划准备 <span class="text-sm font-normal text-gray-400 ml-2">Pre-trip Planning</span></h3>
-                            <p class="text-brand font-medium mb-4">“不知道该怎么玩，信息太分散”</p>
-                            <div class="bg-[#2D2D2D] p-5 rounded-2xl inline-block text-left border border-white/5 w-full">
-                                <h4 class="text-sm text-gray-400 mb-3 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand"></span> 数据支撑</h4>
-                                <p class="text-sm text-gray-300 mb-2">▪ 72.6% 用户需要图文视频景点介绍</p>
-                                <p class="text-sm text-gray-300">▪ 54.1% 需要预订机票、酒店、门票</p>
-                            </div>
-                        </div>
-                        <div data-aos="fade-left">
-                            <div class="bg-gradient-to-br from-brand/20 to-transparent p-1 rounded-3xl">
-                                <div class="bg-[#222] p-6 rounded-[22px] h-full relative overflow-hidden">
-                                    <div class="absolute top-0 right-0 w-20 h-20 bg-brand/10 blur-xl"></div>
-                                    <h4 class="text-lg font-bold text-white mb-3">🎯 设计目标：种草激发与降阻预订</h4>
-                                    <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                                        打破传统政务式展示，打造“内容前置”的种草广场。利用丰富的视觉素材吸引用户，同时提供从路线推荐到住宿门票的<strong class="text-brand">一站式预订入口</strong>，大幅降低出行决策的时间成本。
-                                    </p>
+                                    {/* 底部详细阶段与产出物映射 (结合集互通项目) */}
+                                    <div className="grid grid-cols-5 gap-4 px-[5%] text-center relative z-10">
+                                        <div>
+                                            <h4 className="font-bold text-primary-600 mb-4 border-b border-gray-100 pb-2">01 定义问题</h4>
+                                            <ul className="text-sm text-gray-500 space-y-2">
+                                                <li>系统架构割裂</li>
+                                                <li>操作路径冗长</li>
+                                                <li>新手学习成本极高</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-primary-600 mb-4 border-b border-gray-100 pb-2">02 用户研究</h4>
+                                            <ul className="text-sm text-gray-500 space-y-2">
+                                                <li>客服频繁切屏录单</li>
+                                                <li>管理者报表维度单一</li>
+                                                <li>权限分配极易出错</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-brand-500 mb-4 border-b border-gray-100 pb-2">03 确认目标</h4>
+                                            <ul className="text-sm text-gray-500 space-y-2 font-medium">
+                                                <li className="text-dark">空间折叠聚合信息</li>
+                                                <li className="text-dark">降低认知域负荷</li>
+                                                <li className="text-dark">数据前置可视化</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-brand-500 mb-4 border-b border-gray-100 pb-2">04 方案确定</h4>
+                                            <ul className="text-sm text-gray-500 space-y-2">
+                                                <li>F型全局工作台</li>
+                                                <li>沉浸式侧边栏结构</li>
+                                                <li>分步式与矩阵表单</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-gray-700 mb-4 border-b border-gray-100 pb-2">05 产品落地</h4>
+                                            <ul className="text-sm text-gray-500 space-y-2">
+                                                <li>UI组件规范建立</li>
+                                                <li>高保真原型验证</li>
+                                                <li>前端样式走查与复盘</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </section>
 
-                <!-- Stage 2 -->
-                <div class="relative mb-24 md:mb-32">
-                    <div class="timeline-dot top-1/2 border-[#66BB6A]"></div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center pl-16 md:pl-0">
-                        <div class="md:order-2" data-aos="fade-left">
-                            <div class="text-[#66BB6A] text-6xl font-black opacity-20 mb-[-20px] -ml-4">02</div>
-                            <h3 class="text-2xl font-bold mb-2">前往目的地 <span class="text-sm font-normal text-gray-400 ml-2">On the Way</span></h3>
-                            <p class="text-[#66BB6A] font-medium mb-4">“路上心里没底，希望一切顺利”</p>
-                            <div class="bg-[#2D2D2D] p-5 rounded-2xl inline-block border border-white/5 w-full">
-                                <h4 class="text-sm text-gray-400 mb-3 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#66BB6A]"></span> 数据支撑</h4>
-                                <p class="text-sm text-gray-300 mb-2">▪ 51.1% 强需求实用信息查询(天气、交通)</p>
-                                <p class="text-sm text-gray-300">▪ 38.5% 关注实时交通与停车信息</p>
-                            </div>
-                        </div>
-                        <div class="md:order-1 md:text-right" data-aos="fade-right">
-                            <div class="bg-gradient-to-bl from-[#66BB6A]/20 to-transparent p-1 rounded-3xl">
-                                <div class="bg-[#222] p-6 rounded-[22px] h-full relative overflow-hidden">
-                                    <div class="absolute top-0 left-0 w-20 h-20 bg-[#66BB6A]/10 blur-xl"></div>
-                                    <h4 class="text-lg font-bold text-white mb-3">🎯 设计目标：预期管理与安心护航</h4>
-                                    <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                                        在用户出发前及路途中，平台充当“贴身助理”。首页置顶<strong class="text-[#66BB6A]">动态天气提示与交通微件</strong>，缓解对未知路况的焦虑，建立安全感，提升用户对郭家河文旅服务的初印象。
-                                    </p>
+                    {/* ==================== 03 深度分析 1：数据消费与首页驾驶舱 ==================== */}
+                    <section className="py-24 px-6 lg:px-24 bg-surface">
+                        <div className="max-w-7xl mx-auto">
+                            <SectionHeader 
+                                subtitle="Insight 01: Dashboard & Reports" 
+                                title="数据消费降维：从“读表格”到“看趋势”" 
+                                desc="管理者在B端系统中最核心的诉求是掌握全局。传统ERP首页堆砌菜单，报表全是数据网格，导致管理者极易产生“数据盲区”。" 
+                            />
+                            
+                            <div className="grid lg:grid-cols-12 gap-12 items-start fade-in-up">
+                                {/* 左侧：深入剖析 */}
+                                <div className="lg:col-span-5 sticky top-24 space-y-8">
+                                    <div className="insight-card bg-white p-6 rounded-2xl">
+                                        <div className="w-10 h-10 bg-brand-50 rounded-lg flex items-center justify-center text-brand-500 mb-4"><i className="ph-fill ph-layout text-xl"></i></div>
+                                        <h3 className="text-xl font-bold text-dark mb-2">F型视觉流与核心前置</h3>
+                                        <p className="text-gray-500 text-sm leading-relaxed mb-4">
+                                            <span className="font-bold text-dark">痛点：</span>旧版首页被庞杂的二级菜单占据，找不到关键业务入口。<br/>
+                                            <span className="font-bold text-brand-500">策略：</span>打破系统层级，采用F型浏览动线。将最高频的“待办事项”(发货/退款)提取为大数字微件，直接点击穿透。将复杂的入口收敛至“便捷入口”区域。
+                                        </p>
+                                    </div>
+
+                                    <div className="insight-card bg-white p-6 rounded-2xl delay-100">
+                                        <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-500 mb-4"><i className="ph-fill ph-chart-donut text-xl"></i></div>
+                                        <h3 className="text-xl font-bold text-dark mb-2">目标度量：认知门槛的降低</h3>
+                                        <p className="text-gray-500 text-sm leading-relaxed mb-4">
+                                            <span className="font-bold text-dark">痛点：</span>纯数字报表无法一眼看出业务是否健康。<br/>
+                                            <span className="font-bold text-brand-500">策略：</span>在报表页(图下)，设计“整体本月业绩完成度”双环图。将【业绩完成进度 45%】与【时间进度 96%】并列。管理者无需心算，通过图形面积对比即可瞬间判断：<span className="bg-red-50 text-red-600 px-1 rounded">严重落后于时间进度，需紧急干预</span>。这是数据可视化的核心价值。
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* 右侧：图文结合 */}
+                                <div className="lg:col-span-7 space-y-12">
+                                    <div className="relative group">
+                                        <div className="absolute -inset-2 bg-gradient-to-r from-brand-500 to-orange-300 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity blur-lg"></div>
+                                        <img src="1.jpg" alt="首页设计" className="relative w-full rounded-xl shadow-lg border border-gray-200" />
+                                        <div className="absolute -right-4 top-[30%] bg-white px-4 py-2 rounded shadow-xl border-l-4 border-brand-500 text-sm font-bold text-dark">
+                                            数字前置，任务驱动
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="relative group">
+                                        <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-indigo-300 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity blur-lg"></div>
+                                        <img src="02-首页-我的报表1.png" alt="数据报表" className="relative w-full rounded-xl shadow-lg border border-gray-200" />
+                                        <div className="absolute -left-4 bottom-[20%] bg-white px-4 py-2 rounded shadow-xl border-l-4 border-blue-500 text-sm font-bold text-dark">
+                                            渐变面积图，强化数据边界
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </section>
 
-                <!-- Stage 3 -->
-                <div class="relative mb-24 md:mb-32">
-                    <div class="timeline-dot top-1/2 border-[#81C784]"></div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center pl-16 md:pl-0">
-                        <div class="md:text-right" data-aos="fade-right">
-                            <div class="text-[#81C784] text-6xl font-black opacity-20 mb-[-20px] -ml-4 md:-mr-4">03</div>
-                            <h3 class="text-2xl font-bold mb-2">到达与初步体验 <span class="text-sm font-normal text-gray-400 ml-2">Arrival & First Impression</span></h3>
-                            <p class="text-[#81C784] font-medium mb-4">“刚到这，车停哪？洗手间在哪？”</p>
-                            <div class="bg-[#2D2D2D] p-5 rounded-2xl inline-block text-left border border-white/5 w-full">
-                                <h4 class="text-sm text-gray-400 mb-3 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#81C784]"></span> 数据支撑</h4>
-                                <p class="text-sm text-gray-300 mb-2">▪ 60.0% 需要清晰的卫生间、饮水点标识</p>
-                                <p class="text-sm text-gray-300">▪ 48.1% 需要基于位置的地图导航定位</p>
+                    {/* ==================== 04 深度分析 2：客服上下文折叠 ==================== */}
+                    <section className="py-24 px-6 lg:px-24 bg-white border-y border-gray-100">
+                        <div className="max-w-7xl mx-auto">
+                            <SectionHeader 
+                                subtitle="Insight 02: Contextual Workspace" 
+                                title="物理空间的折叠：终结“页面横跳”" 
+                                desc="客服作为核心执行者，每天需处理数百个会话。传统流程：会话窗口 -> 复制用户ID -> 打开订单列表查询 -> 回复。这个过程切屏高达3-4次，极易产生操作疲劳和失误。" 
+                            />
+
+                            <div className="relative mb-16 fade-in-up">
+                                <img src="03-当前会话.png" alt="客服工作台" className="w-full rounded-2xl shadow-2xl border border-gray-200 block" />
+                                
+                                {/* 交互热点解析层 */}
+                                <div className="absolute top-[20%] left-[10%] w-[20%] h-[60%] border-2 border-dashed border-gray-400 rounded-lg bg-gray-900/5 hover:bg-brand-500/10 transition-colors group cursor-crosshair">
+                                    <div className="absolute -top-10 left-0 bg-dark text-white text-xs px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">1. 全局调度列表：红点预警超时等待</div>
+                                </div>
+                                <div className="absolute top-[10%] left-[32%] w-[40%] h-[80%] border-2 border-brand-500 rounded-lg bg-brand-500/5 shadow-glow group cursor-crosshair">
+                                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-brand-500 text-white text-xs px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">2. 沉浸式交互区：大留白降低阅读疲劳</div>
+                                </div>
+                                <div className="absolute top-[10%] right-[3%] w-[22%] h-[80%] border-2 border-blue-500 rounded-lg bg-blue-500/5 group cursor-crosshair">
+                                    <div className="absolute -top-10 right-0 bg-blue-600 text-white text-xs px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">3. 情报折叠区：免跳出查看历史订单/画像</div>
+                                </div>
                             </div>
-                        </div>
-                        <div data-aos="fade-left">
-                            <div class="bg-gradient-to-br from-[#81C784]/20 to-transparent p-1 rounded-3xl">
-                                <div class="bg-[#222] p-6 rounded-[22px] h-full relative overflow-hidden">
-                                    <div class="absolute top-0 right-0 w-20 h-20 bg-[#81C784]/10 blur-xl"></div>
-                                    <h4 class="text-lg font-bold text-white mb-3">🎯 设计目标：刚需前置与履约保障</h4>
-                                    <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                                        解决“第一公里”的痛点。设计<strong class="text-[#81C784]">服务大厅刚需金刚区</strong>，将卫生间、停车场、医疗点等设施查找高亮显示。结合LBS地图，实现一键导航，保障基础服务体验的流畅无缝。
-                                    </p>
+
+                            <div className="grid md:grid-cols-3 gap-8 fade-in-up delay-100">
+                                <div>
+                                    <h4 className="text-xl font-bold mb-3 flex items-center gap-2"><span className="text-brand-500">#01</span> 情感预警设计</h4>
+                                    <p className="text-gray-500 text-sm leading-relaxed">左侧会话列表除了展示名称，最重要的是<span className="highlight-b">“排队状态与等待时长(红字标红)”</span>。这不是单纯的信息展示，而是给予客服情绪预期，辅助其进行优先级调度（先回复超时客户）。</p>
+                                </div>
+                                <div>
+                                    <h4 className="text-xl font-bold mb-3 flex items-center gap-2"><span className="text-brand-500">#02</span> 视觉降噪的主窗口</h4>
+                                    <p className="text-gray-500 text-sm leading-relaxed">中区的对话气泡去除了复杂的边框与阴影，采用扁平化色块（客服品牌橙色 vs 用户浅灰色）。在长文本阅读场景下，充足的内部留白（Padding）能显著减轻视觉压迫感。</p>
+                                </div>
+                                <div>
+                                    <h4 className="text-xl font-bold mb-3 flex items-center gap-2"><span className="text-brand-500">#03</span> 上下文即刻获取 (核心突破)</h4>
+                                    <p className="text-gray-500 text-sm leading-relaxed">右侧情报区是提升能效的<span className="highlight-b">胜负手</span>。将用户的CRM标签（VIP、高价值）和最近交易订单集成至当前页面。客服回复“尺码有点小”时，视线向右微移即可看到购买的具体商品和物流状态，实现“秒级响应”。</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </section>
 
-                <!-- Stage 4 -->
-                <div class="relative mb-24 md:mb-32">
-                    <div class="timeline-dot top-1/2 border-[#AED581]"></div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center pl-16 md:pl-0">
-                        <div class="md:order-2" data-aos="fade-left">
-                            <div class="text-[#AED581] text-6xl font-black opacity-20 mb-[-20px] -ml-4">04</div>
-                            <h3 class="text-2xl font-bold mb-2">深入游玩体验 <span class="text-sm font-normal text-gray-400 ml-2">In-depth Experience</span></h3>
-                            <p class="text-[#AED581] font-medium mb-4">“这棵古树有故事吗？想深度参与。”</p>
-                            <div class="bg-[#2D2D2D] p-5 rounded-2xl inline-block border border-white/5 w-full">
-                                <h4 class="text-sm text-gray-400 mb-3 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#AED581]"></span> 数据支撑</h4>
-                                <p class="text-sm text-gray-300 mb-2">▪ 68.1% 希望到达景点时有语音/图文解说</p>
-                                <p class="text-sm text-gray-300">▪ 50.3% 喜欢打卡集章等游戏化探索系统</p>
-                            </div>
-                        </div>
-                        <div class="md:order-1 md:text-right" data-aos="fade-right">
-                            <div class="bg-gradient-to-bl from-[#AED581]/20 to-transparent p-1 rounded-3xl">
-                                <div class="bg-[#222] p-6 rounded-[22px] h-full relative overflow-hidden">
-                                    <div class="absolute top-0 left-0 w-20 h-20 bg-[#AED581]/10 blur-xl"></div>
-                                    <h4 class="text-lg font-bold text-white mb-3">🎯 设计目标：文化解码与探索激励</h4>
-                                    <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                                        化“走马观花”为“沉浸探索”。设计<strong class="text-[#AED581]">伴随式智能导览</strong>，走到哪讲到哪，深挖红色文化与自然知识。同时引入“数字徽章收集”系统，以游戏化的激励机制引导游客走遍全乡，延长游览时间。
-                                    </p>
+                    {/* ==================== 05 深度分析 3：表单与权限逻辑降维 ==================== */}
+                    <section className="py-24 px-6 lg:px-24 bg-surface">
+                        <div className="max-w-7xl mx-auto">
+                            <SectionHeader 
+                                subtitle="Insight 03: Complex Forms & Matrices" 
+                                title="对抗密集恐惧：复杂表单的拆解与重构" 
+                                desc="B端产品最大的痛点往往隐藏在长表单和巨型矩阵配置中。如何让用户在录入信息时不感到绝望？核心法则：渐进式披露 (Progressive Disclosure)。" 
+                            />
+
+                            <div className="grid lg:grid-cols-2 gap-16">
+                                {/* 图3 - 商品发布表单 */}
+                                <div className="fade-in-up">
+                                    <div className="mb-6">
+                                        <h3 className="text-2xl font-bold text-dark mb-2">长表单的分步化 (Wizard)</h3>
+                                        <p className="text-gray-500 text-sm">面对包含近30个字段的商品发布页面，如果采用“一镜到底”，用户极易中途放弃或迷失定位。</p>
+                                    </div>
+                                    <img src="3.jpg" alt="商品发布" className="w-full rounded-xl shadow-lg border border-gray-200 mb-6" />
+                                    <div className="bg-white p-5 rounded-xl border-l-4 border-brand-500">
+                                        <h4 className="font-bold text-dark mb-1">设计解法</h4>
+                                        <ul className="text-sm text-gray-500 space-y-2 list-disc pl-4">
+                                            <li><span className="font-bold text-dark">横向步骤拆解：</span> 将任务拆分为“选择分类 -> 基本信息 -> 发布成功”三大步，建立强烈的心理预期。</li>
+                                            <li><span className="font-bold text-dark">视觉卡片分组：</span> 即便在“基本信息”中，也利用橙色标题块和微弱灰底，将“基本信息”、“价格库存”、“服务上架”在视觉上进行格式塔隔离。</li>
+                                            <li><span className="font-bold text-dark">控件优化：</span> 运用单选框(Radio)和胶囊按钮替代冗长的下拉菜单，减少点击次数。</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                {/* 图5 - 账号权限 */}
+                                <div className="fade-in-up delay-200">
+                                    <div className="mb-6">
+                                        <h3 className="text-2xl font-bold text-dark mb-2">网格矩阵降维 (Matrix)</h3>
+                                        <p className="text-gray-500 text-sm">ERP权限分配通常是一个巨大的树状结构，展开后满屏复选框，管理员勾选时极易错漏。</p>
+                                    </div>
+                                    <img src="05-账号权限.png" alt="账号权限" className="w-full rounded-xl shadow-lg border border-gray-200 mb-6" />
+                                    <div className="bg-white p-5 rounded-xl border-l-4 border-blue-500">
+                                        <h4 className="font-bold text-dark mb-1">设计解法</h4>
+                                        <ul className="text-sm text-gray-500 space-y-2 list-disc pl-4">
+                                            <li><span className="font-bold text-dark">三层逻辑结构：</span> 顶部“管理范围”定义大盘 -> 中间Tabs切片(系统参数/角色/功能)切割模块 -> 底部网格化展示具体权限。</li>
+                                            <li><span className="font-bold text-dark">防错机制：</span> 强化的橙色勾选状态，提供清晰的视觉确认。</li>
+                                            <li><span className="font-bold text-dark">批量提效：</span> 右上角常驻“全选/反选/清空”高频动作条，针对新员工入职场景，配置时间从3分钟缩短至10秒。</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </section>
 
-                <!-- Stage 5 -->
-                <div class="relative">
-                    <div class="timeline-dot top-1/2 border-brand-accent"></div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center pl-16 md:pl-0">
-                        <div class="md:text-right" data-aos="fade-right">
-                            <div class="text-brand-accent text-6xl font-black opacity-20 mb-[-20px] -ml-4 md:-mr-4">05</div>
-                            <h3 class="text-2xl font-bold mb-2">返程与回顾 <span class="text-sm font-normal text-gray-400 ml-2">Post-trip Reflection</span></h3>
-                            <p class="text-brand-accent font-medium mb-4">“好想把特产带回去，把回忆分享出去”</p>
-                            <div class="bg-[#2D2D2D] p-5 rounded-2xl inline-block text-left border border-white/5 w-full">
-                                <h4 class="text-sm text-gray-400 mb-3 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span> 数据支撑</h4>
-                                <p class="text-sm text-gray-300 mb-2">▪ 61.5% 期待平台提供“一键游记生成助手”</p>
-                                <p class="text-sm text-gray-300">▪ 31.1% 希望购买特色商品或获得复购优惠</p>
+                    {/* ==================== 06 列表设计法则 ==================== */}
+                    <section className="py-24 px-6 lg:px-24 bg-dark text-white">
+                        <div className="max-w-7xl mx-auto">
+                             <div className="mb-16 fade-in-up">
+                                <p className="text-brand-400 font-bold tracking-widest text-sm mb-2 uppercase">Insight 04: Data Tables</p>
+                                <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">列表的行动导向：过滤与状态外显</h2>
                             </div>
-                        </div>
-                        <div data-aos="fade-left">
-                            <div class="bg-gradient-to-br from-brand-accent/20 to-transparent p-1 rounded-3xl">
-                                <div class="bg-[#222] p-6 rounded-[22px] h-full relative overflow-hidden">
-                                    <div class="absolute top-0 right-0 w-20 h-20 bg-brand-accent/10 blur-xl"></div>
-                                    <h4 class="text-lg font-bold text-white mb-3">🎯 设计目标：裂变留存与长尾转化</h4>
-                                    <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                                        构建游后的商业与口碑闭环。提供<strong class="text-brand-accent">低门槛的Vlog/游记模板</strong>促进社交裂变；打造“特产商城”模块，通过游玩积分兑换优惠券的方式，将线下体验流量转化为线上农产品复购流量。
-                                    </p>
+
+                            <div className="grid lg:grid-cols-12 gap-12 items-center fade-in-up">
+                                <div className="lg:col-span-8">
+                                    <img src="2.jpg" alt="客户列表" className="w-full rounded-xl shadow-2xl border border-gray-700" />
+                                </div>
+                                <div className="lg:col-span-4 space-y-8">
+                                    <div>
+                                        <div className="w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 flex items-center justify-center font-bold mb-3 border border-brand-500/30">1</div>
+                                        <h3 className="text-xl font-bold mb-2">高频筛选平铺与高级收起</h3>
+                                        <p className="text-gray-400 text-sm">将“全部、普通客户、优质客户”作为顶部快捷Tabs。仅将“创建时间、标签”等低频或复杂的组合查询放入下拉表单，避免表单区过大挤压数据可视区高度。</p>
+                                    </div>
+                                    <div>
+                                        <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold mb-3 border border-blue-500/30">2</div>
+                                        <h3 className="text-xl font-bold mb-2">状态字段符号化</h3>
+                                        <p className="text-gray-400 text-sm">B端表格最忌讳全是黑白文字。设计中将“人群定义”用微弱色块（蓝底新客、红底流失）包裹，“跟进状态”前置红/绿提示圆点。利用大脑对色彩的识别速度远大于文字的原理，提升检视效率。</p>
+                                    </div>
+                                    <div>
+                                        <div className="w-8 h-8 rounded-full bg-gray-500/20 text-gray-300 flex items-center justify-center font-bold mb-3 border border-gray-500/30">3</div>
+                                        <h3 className="text-xl font-bold mb-2">操作按钮解构</h3>
+                                        <p className="text-gray-400 text-sm">彻底废弃表格行末“操作->下拉->编辑”的三级交互。直接将核心高频操作“跟进”、“编辑”以平铺文字按钮展示，减少了50%的无效鼠标点击。</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </section>
 
-            </div>
-        </div>
-    </section>
+                    {/* ==================== 07 结语与复盘 ==================== */}
+                    <section className="py-24 px-6 lg:px-24 bg-surface text-center">
+                        <div className="max-w-4xl mx-auto fade-in-up">
+                            <h2 className="text-3xl font-bold text-dark mb-6">价值复盘：好的设计，是用数据说话的</h2>
+                            <p className="text-gray-500 mb-12 text-lg">
+                                本次集互通的重构不仅是视觉层面的“换肤”，更是底层业务流的再造。我们通过定义问题、推导策略，最终将冰冷的功能转化为赋能人效的工具。
+                            </p>
+                            
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                    <div className="text-3xl font-bold text-brand-500 mb-1">↓ 35%</div>
+                                    <div className="text-sm text-gray-400">客服人均响应时间</div>
+                                </div>
+                                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                    <div className="text-3xl font-bold text-brand-500 mb-1">↑ 2.5倍</div>
+                                    <div className="text-sm text-gray-400">报表日均查看频次</div>
+                                </div>
+                                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                    <div className="text-3xl font-bold text-brand-500 mb-1">↓ 60%</div>
+                                    <div className="text-sm text-gray-400">新员工培训耗时</div>
+                                </div>
+                                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                    <div className="text-3xl font-bold text-dark mb-1">一致性</div>
+                                    <div className="text-sm text-gray-400">前端组件化落地提升</div>
+                                </div>
+                            </div>
 
-    <!-- 05 Visual System -->
-    <section class="py-24 bg-white relative">
-        <div class="slide-container px-6">
-            <div class="text-center mb-20" data-aos="fade-up">
-                <div class="section-subtitle">04 / Design System</div>
-                <h2 class="section-title">视觉构筑：提取自然与人文的DNA</h2>
-                <p class="text-text-sub mt-4 max-w-2xl mx-auto">UI视觉风格高度契合郭家河的自然禀赋与历史沉淀。摒弃冰冷的科技感，采用有温度的色彩与圆润的卡片式设计。</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-                <!-- Color Palette -->
-                <div class="md:col-span-5 space-y-6" data-aos="fade-right">
-                    <h3 class="text-xl font-bold mb-6">色彩推导 (Color Palette)</h3>
-                    <div class="flex gap-4">
-                        <div class="flex-1">
-                            <div class="h-24 rounded-2xl bg-[#4CAF50] shadow-md mb-2"></div>
-                            <p class="text-sm font-bold">生态绿</p>
-                            <p class="text-xs text-text-light">主品牌色</p>
-                            <p class="text-xs font-mono mt-1">#4CAF50</p>
-                        </div>
-                        <div class="flex-1">
-                            <div class="h-24 rounded-2xl bg-[#E8F5E9] shadow-md mb-2 border border-gray-100"></div>
-                            <p class="text-sm font-bold">湿地绿</p>
-                            <p class="text-xs text-text-light">背景底色</p>
-                            <p class="text-xs font-mono mt-1">#E8F5E9</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4 mt-4">
-                        <div class="flex-1">
-                            <div class="h-20 rounded-2xl bg-[#FFCA28] shadow-md mb-2"></div>
-                            <p class="text-sm font-bold">暖阳黄</p>
-                            <p class="text-xs text-text-light">强调/价格色</p>
-                            <p class="text-xs font-mono mt-1">#FFCA28</p>
-                        </div>
-                        <div class="flex-1">
-                            <div class="h-20 rounded-2xl bg-[#E57373] shadow-md mb-2"></div>
-                            <p class="text-sm font-bold">星火红</p>
-                            <p class="text-xs text-text-light">红色文化提取</p>
-                            <p class="text-xs font-mono mt-1">#E57373</p>
-                        </div>
-                        <div class="flex-1">
-                            <div class="h-20 rounded-2xl bg-[#FFFFFF] shadow-md mb-2 border border-gray-100"></div>
-                            <p class="text-sm font-bold">云雾白</p>
-                            <p class="text-xs text-text-light">卡片底色</p>
-                            <p class="text-xs font-mono mt-1">#FFFFFF</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Components & Style -->
-                <div class="md:col-span-7 bg-brand-light rounded-3xl p-8" data-aos="fade-left">
-                    <h3 class="text-xl font-bold mb-6">界面隐喻 (Interface Metaphors)</h3>
-                    
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div class="text-brand text-2xl mb-3">🔲</div>
-                            <h4 class="font-bold mb-2">流体卡片排版</h4>
-                            <p class="text-xs text-text-sub leading-relaxed">采用大圆角(Radius-2xl)卡片，降低认知负荷，传递乡村旅游的轻松、无边界感。大面积留白，让内容自由呼吸。</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div class="text-brand text-2xl mb-3">🎨</div>
-                            <h4 class="font-bold mb-2">面性多彩图标</h4>
-                            <p class="text-xs text-text-sub leading-relaxed">服务模块提取“山、水、叶、帐篷”等自然元素，采用双色微渐变填充风格，年轻化、活泼化，契合轻中产审美。</p>
-                        </div>
-                        <div class="col-span-2 bg-gradient-to-r from-brand/10 to-brand-accent/10 p-6 rounded-2xl border border-white">
-                            <h4 class="font-bold mb-2 text-brand-dark">设计原则 (Design Principles)</h4>
-                            <div class="flex gap-4 text-xs font-medium text-text-sub mt-3">
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">内容前置</span>
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">操作极简</span>
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">情感化插画</span>
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">柔和阴影</span>
+                            <div className="inline-flex items-center gap-2 text-brand-500 font-bold tracking-widest text-lg hover:text-brand-600 transition-colors">
+                                <i className="ph-fill ph-check-circle text-2xl"></i> END OF CASE STUDY
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
-            </div>
-        </div>
-    </section>
+            );
+        };
 
-    <!-- 06 Core UI Showcase (Design Solution) -->
-    <section class="py-24 bg-[#FAFAFA] relative overflow-hidden">
-        <div class="slide-container px-6">
-            <div class="text-center mb-20" data-aos="fade-up">
-                <div class="section-subtitle">05 / UI Solutions</div>
-                <h2 class="section-title">界面演绎：将需求转化为可视的体验</h2>
-            </div>
-
-            <!-- UI 1: Home -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32">
-                <div class="lg:col-span-5 order-2 lg:order-1" data-aos="fade-right">
-                    <div class="w-12 h-12 bg-brand/10 rounded-full flex items-center justify-center text-brand font-bold text-xl mb-4">01</div>
-                    <h3 class="text-3xl font-bold mb-4">首页探索：所见即向往</h3>
-                    <h4 class="text-lg text-brand font-medium mb-6">化繁为简的信息分发枢纽</h4>
-                    <p class="text-text-sub mb-6 leading-relaxed">响应问卷中<strong>"72.6%用户需要图文视频介绍"</strong>的诉求，首页弱化了工具属性，强化了“内容种草”：</p>
-                    <ul class="space-y-4">
-                        <li class="flex gap-3">
-                            <span class="text-brand">✓</span>
-                            <span class="text-text-sub"><strong>情境头图：</strong> 采用大幅湿地风景，配合“心栖梦归处”文案，建立初印象。</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="text-brand">✓</span>
-                            <span class="text-text-sub"><strong>金刚区重组：</strong> 将问卷中高频需求的“酒店民宿”、“服务资讯”、“路线定制”前置，提升找寻效率。</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="text-brand">✓</span>
-                            <span class="text-text-sub"><strong>内容瀑布流：</strong> “精选推荐”融合了活动预告、短视频与游记，满足用户多维度的攻略浏览需求。</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="lg:col-span-7 order-1 lg:order-2 flex justify-center relative" data-aos="fade-left">
-                    <div class="absolute -z-10 w-full h-full bg-brand/5 rounded-[4rem] transform rotate-3 scale-105"></div>
-                    <div class="mockup-wrapper">
-                        <div class="mockup-notch"></div>
-                        <div class="mockup-content p-0 relative">
-                            <!-- Placeholder for 首页 (Frame 427320753.jpg) -->
-                            <div class="absolute inset-0 bg-gray-100 flex items-center justify-center font-bold text-gray-400">
-                                                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- UI 2: Map & Navigation -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32">
-                <div class="lg:col-span-7 flex justify-center relative" data-aos="fade-right">
-                    <div class="absolute -z-10 w-full h-full bg-brand-accent/10 rounded-[4rem] transform -rotate-3 scale-105"></div>
-                    <div class="mockup-wrapper">
-                        <div class="mockup-notch"></div>
-                        <div class="mockup-content p-0 relative">
-                            <!-- Placeholder for 定位页 (定位页.jpg) -->
-                            <div class="absolute inset-0 bg-gray-100 flex items-center justify-center font-bold text-gray-400">
-                                                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="lg:col-span-5" data-aos="fade-left">
-                    <div class="w-12 h-12 bg-brand-accent/20 rounded-full flex items-center justify-center text-brand-accent font-bold text-xl mb-4">02</div>
-                    <h3 class="text-3xl font-bold mb-4">智能导览：伴随式的云端导游</h3>
-                    <h4 class="text-lg text-brand-accent font-medium mb-6">满足游中核心痛点：68.2%需要景点解说</h4>
-                    <p class="text-text-sub mb-6 leading-relaxed">导览模块不仅是地图，更是连接用户与当地文化历史的桥梁：</p>
-                    <ul class="space-y-4">
-                        <li class="flex gap-3">
-                            <span class="text-brand-accent">✓</span>
-                            <span class="text-text-sub"><strong>半屏交互架构：</strong> 地图层与信息层上下分离。上半屏保留沉浸式视觉，下半屏展示基于定位的结构化数据（如：3A级景区标签、详情介绍、近期活动）。</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="text-brand-accent">✓</span>
-                            <span class="text-text-sub"><strong>LBS推荐：</strong> “附近景点”模块根据实时距离智能排序，解决游客实地“迷茫感”。</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="text-brand-accent">✓</span>
-                            <span class="text-text-sub"><strong>温馨提示栏：</strong> 融入人性化关怀（如：早晚温差大，请注意保暖），提升整体好感度。</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- UI 3: Service & Activities -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32">
-                <div class="lg:col-span-5 order-2 lg:order-1" data-aos="fade-right">
-                    <div class="w-12 h-12 bg-brand/10 rounded-full flex items-center justify-center text-brand font-bold text-xl mb-4">03</div>
-                    <h3 class="text-3xl font-bold mb-4">服务聚合与转化设计</h3>
-                    <h4 class="text-lg text-brand font-medium mb-6">一站式解决：从刚需到增值服务</h4>
-                    <p class="text-text-sub mb-6 leading-relaxed">为响应问卷中<strong>"60%用户需要查找卫生间标识"</strong>以及<strong>"一站式预订"</strong>的需求，服务页采用清晰的分类逻辑：</p>
-                    <ul class="space-y-4">
-                        <li class="flex gap-3">
-                            <span class="text-brand">✓</span>
-                            <span class="text-text-sub"><strong>服务大厅归类：</strong> 将零散的功能划分为“游前必备”、“出行助手”、“游后反馈”三大生命周期板块，符合用户认知模型。</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="text-brand">✓</span>
-                            <span class="text-text-sub"><strong>跟团游与活动预定：</strong> “绿色生态游”、“红色主题游”等定制线路（对应问卷中高关注度的两大板块）以大图卡片呈现，标明价格促转化。</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="text-brand">✓</span>
-                            <span class="text-text-sub"><strong>活动日历时间轴：</strong> 农产品展销会、丰收节等活动以时间轴插画形式展现，增强活动的代入感与趣味性。</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="lg:col-span-7 order-1 lg:order-2 flex justify-center relative gap-4" data-aos="fade-left">
-                    <!-- Placeholder for 服务页 (服务页.png) -->
-                    <div class="mockup-wrapper transform scale-90 -translate-y-4">
-                        <div class="mockup-notch"></div>
-                        <div class="mockup-content p-0 relative">
-                            <div class="absolute inset-0 bg-gray-100 flex items-center justify-center font-bold text-gray-400">
-                                                            </div>
-                        </div>
-                    </div>
-                    <!-- Placeholder for 跟团游/活动预定 -->
-                    <div class="mockup-wrapper transform scale-90 translate-y-8 z-10 hidden md:block shadow-2xl">
-                        <div class="mockup-notch"></div>
-                        <div class="mockup-content p-0 relative">
-                            <div class="absolute inset-0 bg-gray-100 flex items-center justify-center font-bold text-gray-400">
-                                                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- UI 4: Mall -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-7 flex justify-center relative" data-aos="fade-right">
-                    <div class="mockup-wrapper">
-                        <div class="mockup-notch"></div>
-                        <div class="mockup-content p-0 relative">
-                            <!-- Placeholder for 商城 (服务页-商城.jpg) -->
-                            <div class="absolute inset-0 bg-gray-100 flex items-center justify-center font-bold text-gray-400">
-                                                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="lg:col-span-5" data-aos="fade-left">
-                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-500 font-bold text-xl mb-4">04</div>
-                    <h3 class="text-3xl font-bold mb-4">特产商城：延续文化长尾</h3>
-                    <h4 class="text-lg text-orange-500 font-medium mb-6">线上选购，新鲜到家</h4>
-                    <p class="text-text-sub mb-6 leading-relaxed">文旅平台的终局不仅是体验，更要赋能乡村振兴：</p>
-                    <ul class="space-y-4">
-                        <li class="flex gap-3">
-                            <span class="text-orange-500">✓</span>
-                            <span class="text-text-sub"><strong>品类聚焦：</strong> 提炼“农产品”、“文创产品”、“手工制品”三大核心品类，主打地方特色（如：大别山间茶、手工竹编背篓）。</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="text-orange-500">✓</span>
-                            <span class="text-text-sub"><strong>视觉营销：</strong> 顶部通栏场景大图提升产品的高级感与源头信任感，“郭家河畔水，大别山间茶”文案传递文化温度。</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- 07 Value Measurement (Data Indicator) -->
-    <section class="py-24 bg-brand text-white relative">
-        <div class="absolute inset-0 bg-pattern opacity-20"></div>
-        <div class="slide-container px-6 relative z-10">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <div class="section-subtitle text-white">06 / Value Measurement</div>
-                <h2 class="section-title !text-white after:bg-white">数据指标与价值延展</h2>
-                <p class="mt-4 max-w-2xl mx-auto opacity-90">设计的终点是商业价值与用户价值的共赢。基于“五导家”闭环思维，我们制定了以下核心指标(KPI)来衡量迭代效果：</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-                <div class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20" data-aos="fade-up" data-aos-delay="0">
-                    <div class="text-4xl font-black mb-2">35<span class="text-xl">%</span></div>
-                    <p class="text-sm font-bold mb-2">预订转化率提升</p>
-                    <p class="text-xs opacity-75">通过整合一站式路线与服务大厅，降低决策链路流失</p>
-                </div>
-                <div class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20" data-aos="fade-up" data-aos-delay="100">
-                    <div class="text-4xl font-black mb-2">15<span class="text-xl">min</span></div>
-                    <p class="text-sm font-bold mb-2">单次访问时长</p>
-                    <p class="text-xs opacity-75">互动导览地图与知识科普弹窗有效增加游中留存</p>
-                </div>
-                <div class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20" data-aos="fade-up" data-aos-delay="200">
-                    <div class="text-4xl font-black mb-2">+45<span class="text-xl">%</span></div>
-                    <p class="text-sm font-bold mb-2">UGC内容产出比</p>
-                    <p class="text-xs opacity-75">游记模板与打卡集章分享，大幅提升游后社交裂变</p>
-                </div>
-                <div class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20" data-aos="fade-up" data-aos-delay="300">
-                    <div class="text-4xl font-black mb-2">28<span class="text-xl">%</span></div>
-                    <p class="text-sm font-bold mb-2">商城复购/转化</p>
-                    <p class="text-xs opacity-75">线上选购新鲜到家，延长文旅产业链路</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 bg-gray-900 text-center text-gray-500 text-sm">
-        <p>郭家河乡文旅体验服务需求调研问卷 & UI 设计复盘分析</p>
-        <p class="mt-2">Based on Design Research Data • 2026</p>
-    </footer>
-
-    <!-- Initialize ECharts & AOS -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Animation On Scroll
-            AOS.init({
-                once: true,
-                offset: 50,
-                duration: 800,
-                easing: 'ease-out-cubic',
-            });
-
-            // ECharts 1: Gender & Geography (Donut)
-            var chartGender = echarts.init(document.getElementById('chart-gender-geo'));
-            var optionGender = {
-                tooltip: { trigger: 'item' },
-                legend: { top: 'bottom', textStyle: { color: '#666'} },
-                color: ['#4CAF50', '#FFCA28', '#81C784', '#FFE082'],
-                series: [
-                    {
-                        name: '性别比例',
-                        type: 'pie',
-                        radius: ['40%', '70%'],
-                        avoidLabelOverlap: false,
-                        itemStyle: {
-                            borderRadius: 10,
-                            borderColor: '#fff',
-                            borderWidth: 2
-                        },
-                        label: { show: false, position: 'center' },
-                        emphasis: {
-                            label: { show: true, fontSize: 20, fontWeight: 'bold' }
-                        },
-                        labelLine: { show: false },
-                        data: [
-                            { value: 61.5, name: '女性 (61.5%)' },
-                            { value: 38.5, name: '男性 (38.5%)' }
-                        ]
-                    }
-                ]
-            };
-            chartGender.setOption(optionGender);
-
-            // ECharts 2: Age & Job (Bar)
-            var chartAge = echarts.init(document.getElementById('chart-age-job'));
-            var optionAge = {
-                tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-                xAxis: { 
-                    type: 'category', 
-                    data: ['18岁以下', '19-30岁', '31-40岁', '40-50岁', '50岁以上'],
-                    axisLine: { lineStyle: { color: '#e0e0e0' } },
-                    axisLabel: { color: '#666' }
-                },
-                yAxis: { 
-                    type: 'value', name: '占比(%)',
-                    splitLine: { lineStyle: { type: 'dashed', color: '#f0f0f0' } },
-                    axisLabel: { color: '#999' }
-                },
-                series: [
-                    {
-                        name: '年龄分布',
-                        type: 'bar',
-                        barWidth: '40%',
-                        itemStyle: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                { offset: 0, color: '#4CAF50' },
-                                { offset: 1, color: '#81C784' }
-                            ]),
-                            borderRadius: [4, 4, 0, 0]
-                        },
-                        data: [1.5, 37.8, 43.7, 12.6, 4.4]
-                    }
-                ]
-            };
-            chartAge.setOption(optionAge);
-
-            // ECharts 3: Channel (Horizontal Bar)
-            var chartChannel = echarts.init(document.getElementById('chart-channel'));
-            var optionChannel = {
-                tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-                grid: { left: '3%', right: '10%', bottom: '3%', containLabel: true },
-                xAxis: { type: 'value', show: false },
-                yAxis: { 
-                    type: 'category', 
-                    data: ['电视/报纸', '旅游网站', '朋友推荐', '微信生态', '短视频平台', '小红书/微博'].reverse(),
-                    axisLine: { show: false },
-                    axisTick: { show: false },
-                    axisLabel: { color: '#333', fontWeight: 500 }
-                },
-                series: [
-                    {
-                        name: '了解渠道',
-                        type: 'bar',
-                        data: [0, 16.3, 35.6, 20.7, 28, 48].reverse(), // adjusted raw numbers mapped to percentage context roughly based on chart display
-                        label: {
-                            show: true,
-                            position: 'right',
-                            formatter: '{c}人',
-                            color: '#666'
-                        },
-                        itemStyle: {
-                            color: '#FFCA28',
-                            borderRadius: [0, 10, 10, 0]
-                        }
-                    }
-                ]
-            };
-            chartChannel.setOption(optionChannel);
-
-            // ECharts 4: Focus Radar
-            var chartFocus = echarts.init(document.getElementById('chart-focus'));
-            var optionFocus = {
-                tooltip: {},
-                radar: {
-                    indicator: [
-                        { name: '自然生态', max: 80 },
-                        { name: '红色文化', max: 80 },
-                        { name: '历史建筑', max: 80 },
-                        { name: '民俗节庆', max: 80 },
-                        { name: '非遗体验', max: 80 },
-                        { name: '特色美食', max: 80 }
-                    ],
-                    splitArea: { areaStyle: { color: ['#f8fdf8', '#f0f9f1'] } },
-                    axisName: { color: '#666' }
-                },
-                series: [{
-                    name: '关注点',
-                    type: 'radar',
-                    data: [
-                        {
-                            value: [66, 76, 64, 60, 44, 38],
-                            name: '关注人次',
-                            areaStyle: { color: 'rgba(76, 175, 80, 0.4)' },
-                            lineStyle: { color: '#4CAF50', width: 2 },
-                            itemStyle: { color: '#4CAF50' }
-                        }
-                    ]
-                }]
-            };
-            chartFocus.setOption(optionFocus);
-
-            // Responsive chart resizing
-            window.addEventListener('resize', function() {
-                chartGender.resize();
-                chartAge.resize();
-                chartChannel.resize();
-                chartFocus.resize();
-            });
-        });
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
